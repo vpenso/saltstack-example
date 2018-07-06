@@ -12,6 +12,7 @@ docker_ce_packages:
       - device-mapper-persistent-data
       - lvm2
       - docker-ce
+      - docker-python
 
 docker_service:
   service.running:

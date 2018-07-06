@@ -28,13 +28,13 @@ echo 'salt-call-local-state() -- Exec masterless Salt for with given SLS'
 salt-call-local-state() {
         salt-call --local \
                   --file-root $SALT_DOCKER_PATH/srv/salt \
-                  state.sls $@ \
-                  &>> $SALT_DOCKER_LOGS/salt.log
+                  state.sls $@
 }
 
 echo 'salt-call-local-state-docker() -- Install Docker CE on localhost'
 salt-call-local-state-docker() {
         # run a masterless salt-minion
         echo Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
-        salt-call-local-state docker/docker-ce
+        salt-call-local-state docker/docker-ce \
+                  &>> $SALT_DOCKER_LOGS/salt.log
 }
