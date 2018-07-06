@@ -8,7 +8,6 @@ CentOS 7   | Operating system              | <https://centos.org>
 SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
 
-
 This example uses a virtual machine setup with [vm-tools][16]:
 
 ```bash
@@ -16,15 +15,15 @@ This example uses a virtual machine setup with [vm-tools][16]:
 >>> vm s centos7 lxcm01
 # install VCS and clone this repository
 >>> vm ex lxcm01 -r '
-        yum install -y git bash-completion
+        yum install -qy git bash-completion
         git clone https://github.com/vpenso/saltstack-docker-example
 '
 # login as root
 >>> vm lo lxcm01 -r
 # change to the repository
-[root@lxcm01 ~]# cd saltstack-docker-example/
+[root@lxcm01 ~] cd saltstack-docker-example/
 # source the environment
-[root@lxcm01 saltstack-docker-example]# source source_me.sh 
+[root@lxcm01 saltstack-docker-example] source source_me.sh 
 SALT_DOCKER_PATH=/root/saltstack-docker-example
 docker-search-repository-tags()  -- list tags from a repository on DockerHub
 docker-build-salt-master() -- Build the salt-master container image
@@ -42,6 +41,8 @@ docker-build-salt-master() -- Build the salt-master container image
 
 ## Salt-Minion & Docker CE
 
+Required file from this repository:
+
 File                             | Description
 ---------------------------------|-----------------------------------------
 [var/aliases/salt.sh][09]        | Shell functions for SaltStack
@@ -49,9 +50,9 @@ File                             | Description
 [docker-ce.repo][07]             | Docker CE Yum repository configuration
 [docker-ce.sls][06]              | Salt state file to install Docker CE
 
+Command to execute:
+
 ```bash
-# load the shell functions
->>> source source_me.sh
 # bootstrap salt-minion on localhost
 >>> salt-bootstrap-minion
 Add SaltStack repository to Yum in /etc/yum.repos.d/salt.repo
