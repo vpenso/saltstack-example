@@ -31,7 +31,7 @@ salt-call-local-state() {
         salt-call --local \
                   --file-root $SALT_STATE_TREE \
                   state.sls $@ \
-                  &| tee -a $SALT_DOCKER_LOGS/salt.log
+                  |& tee -a $SALT_DOCKER_LOGS/salt.log
 }
 
 echo 'salt-call-local-state-docker() -- Install Docker CE on localhost'
