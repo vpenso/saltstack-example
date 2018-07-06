@@ -1,4 +1,4 @@
-# SaltStack Docker Deployment
+# SaltStack with Docker Examples
 
 List of components used in this project:
 
@@ -8,6 +8,31 @@ CentOS 7   | Operating system              | <https://centos.org>
 SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
 
+
+This example uses a virtual machine setup with [vm-tools][16]:
+
+```bash
+# start a CentOS 7 virtual machine instance
+>>> vm s centos7 lxcm01
+# install VCS and clone this repository
+>>> vm ex lxcm01 -r '
+        yum install -y git bash-completion
+        git clone https://github.com/vpenso/saltstack-docker-example
+'
+# login as root
+>>> vm lo lxcm01 -r
+# change to the repository
+[root@lxcm01 ~]# cd saltstack-docker-example/
+# source the environment
+[root@lxcm01 saltstack-docker-example]# source source_me.sh 
+SALT_DOCKER_PATH=/root/saltstack-docker-example
+docker-search-repository-tags()  -- list tags from a repository on DockerHub
+docker-build-salt-master() -- Build the salt-master container image
+...
+```
+
+# Deployment
+
 **Boostrap localhost to run a Salt master as a service in a Docker container:**
 
 1. Install Salt minion on the host
@@ -15,27 +40,7 @@ Docker     | Container Management          | <https://docker.com>
 3. Build a Salt Master Docker container image
 4. Run the `salt-master` service container to **serve a local Salt state tree** [srv/salt](srv/salt)
 
-The shell script [source_me.sh][00] adds the shell functions in [var/aliases/\*.sh][02] to the environment.
-
-```bash
->>> source source_me.sh
-```
-
-This example uses a virtual machine setup with [vm-tools][16]:
-
-```bash
-# start a CentOS 7 virtual machine instance
-vm s centos7 lxcm01
-# install VCS and clone this repository
-vm ex lxcm01 -r '
-        yum install -y git bash-completion
-        git clone https://github.com/vpenso/mesos-example
-'
-# login as root
-vm lo lxcm01 -r
-```
-
-## Docker
+## Salt-Minion & Docker CE
 
 File                             | Description
 ---------------------------------|-----------------------------------------
@@ -56,7 +61,7 @@ Install salt-minion with Yum, cf. $SALT_DOCKER_LOGS/yum.log
 Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
 ```
 
-## Salt Master
+## Salt-Master Container 
 
 Build and run the "salt-master" docker container:
 
@@ -99,7 +104,7 @@ Using [Salt Docker states][13]:
 >>> docker container inspect salt-master
 ```
 
-## Docker Registry
+## Docker Registry Container
 
 Deploy a [Docker registry server][14] container:
 
