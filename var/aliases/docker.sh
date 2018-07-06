@@ -28,3 +28,9 @@ docker-attach-salt-master() {
         echo Detach with ctrl-p ctrl-q
         docker attach salt-master
 }
+
+echo 'docker-container-remove-all() -- Stop & remove all containers on localhost'
+docker-container-remove-all() {
+       docker container stop $(docker ps -a -q)
+       docker container prune -f
+}

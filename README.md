@@ -42,11 +42,11 @@ Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
 
 Build and run the "salt-master" docker container:
 
-File                               | Description
------------------------------------|-----------------------------------------
-[docker.sh][11]                    | Shell functions for Docker
-[salt-master/Dockerfile][10]       | Dockerfile for the Salt master
-[master-docker-container.sls][12]  | Salt state file build & start salt-master
+File                                    | Description
+----------------------------------------|-----------------------------------------
+[docker.sh][11]                         | Shell functions for Docker
+[salt-master/Dockerfile][10]            | Dockerfile for the Salt master
+[salt/master-docker-container.sls][12]  | Salt state file build & start salt-master
 
 Using the Docker CLI:
 
@@ -79,6 +79,20 @@ Using [Salt Docker states][13]:
 >>> salt-call-local-state salt/master-docker-container
 ```
 
+## Docker Registry
+
+Deploy a [Docker registry server][14] container:
+
+
+File                                       | Description
+-------------------------------------------|-----------------------------------------
+[docker/registry-docker-container.sls][15] | Salt state file pull & run a Docker registry container
+
+```bash
+>>> salt-call-local-state docker/registry-docker-container
+```
+
+
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"
 [02]: var/aliases/
@@ -94,4 +108,4 @@ Using [Salt Docker states][13]:
 [12]: srv/salt/salt/master-docker-container.sls
 [13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
 [14]: https://docs.docker.com/registry/deploying/
-
+[15]: srv/salt/docker/registry-docker-container.sls
