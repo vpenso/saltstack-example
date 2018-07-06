@@ -93,4 +93,5 @@ Using [Salt Docker states][13]:
 [11]: var/aliases/docker.sh
 [12]: srv/salt/salt/master-docker-container.sls
 [13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
+[14]: https://docs.docker.com/registry/deploying/
 
