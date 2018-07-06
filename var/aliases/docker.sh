@@ -19,7 +19,7 @@ docker-run-salt-master() {
                    --name salt-master \
                    --publish 4505:4505 \
                    --publish 4506:4506 \
-                   --volume $SALT_DOCKER_PATH/srv/salt:/srv/salt \
+                   --volume $SALT_STATE_TREE/srv/salt:/srv/salt \
                    salt-master
 } 
 

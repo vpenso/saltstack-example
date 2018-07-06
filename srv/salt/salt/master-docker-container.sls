@@ -13,4 +13,4 @@ docker_run_salt_master:
       - 4505:4505
       - 4506:4506
     - binds: 
-      - {{ salt['environ.get']('SALT_DOCKER_PATH') }}/srv/salt:/srv/salt:ro
+      - {{ salt['environ.get']('SALT_STATE_TREE') }}:/srv/salt:ro

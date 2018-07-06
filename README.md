@@ -17,14 +17,18 @@ Docker     | Container Management          | <https://docker.com>
 
 The shell script [source_me.sh][00] adds the shell functions in [var/aliases/\*.sh][02] to the environment.
 
+```bash
+>>> source source_me.sh
+```
+
 ## Docker
 
-File                 | Description
----------------------|-----------------------------------------
-[salt.sh][09]        | Shell functions for SaltStack
-[salt.repo][08]      | SaltStack Yum repository configuration
-[docker-ce.repo][07] | Docker CE Yum repository configuration
-[docker-ce.sls][06]  | Salt state file to install Docker CE
+File                             | Description
+---------------------------------|-----------------------------------------
+[var/aliases/salt.sh][09]        | Shell functions for SaltStack
+[salt.repo][08]                  | SaltStack Yum repository configuration
+[docker-ce.repo][07]             | Docker CE Yum repository configuration
+[docker-ce.sls][06]              | Salt state file to install Docker CE
 
 ```bash
 # load the shell functions
@@ -44,7 +48,7 @@ Build and run the "salt-master" docker container:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
-[docker.sh][11]                         | Shell functions for Docker
+[var/aliases/docker.sh][11]             | Shell functions for Docker
 [salt-master/Dockerfile][10]            | Dockerfile for the Salt master
 [salt/master-docker-container.sls][12]  | Salt state file build & start salt-master
 
@@ -77,6 +81,8 @@ Using [Salt Docker states][13]:
 ```bash
 # exec masterless Salt to build and start the salt-master container
 >>> salt-call-local-state salt/master-docker-container
+# inspect the salt-master container
+>>> docker container inspect salt-master
 ```
 
 ## Docker Registry

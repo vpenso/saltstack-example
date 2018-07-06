@@ -1,8 +1,10 @@
 SALT_DOCKER_LOGS=$SALT_DOCKER_PATH/var/log
+SALT_STATE_TREE=$SALT_DOCKER_PATH/srv/salt
 
-export SALT_DOCKER_LOGS
+export SALT_DOCKER_LOGS SALT_STATE_TREE
 
 echo SALT_DOCKER_LOGS=$SALT_DOCKER_LOGS
+echo SALT_STATE_TREE=$SALT_STATE_TREE
 
 # create the log directory if missing
 [[ -d $SALT_DOCKER_LOGS ]] || mkdir --parents $SALT_DOCKER_LOGS
@@ -24,11 +26,12 @@ salt-bootstrap-minion() {
 
 }
 
-echo 'salt-call-local-state() -- Exec masterless Salt for with given SLS'
+echo 'salt-call-local-state() -- Exec masterless Salt with given SLS'
 salt-call-local-state() {
         salt-call --local \
-                  --file-root $SALT_DOCKER_PATH/srv/salt \
-                  state.sls $@
+                  --file-root $SALT_STATE_TREE \
+                  state.sls $@ \
+                  &| tee -a $SALT_DOCKER_LOGS/salt.log
 }
 
 echo 'salt-call-local-state-docker() -- Install Docker CE on localhost'
