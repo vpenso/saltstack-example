@@ -40,10 +40,13 @@ Exec masterless Salt to install Docker CE, cf. /root/saltstack-docker/var/log/sa
 
 ## Salt Master
 
-File                          | Description
-------------------------------|-----------------------------------------
-[docker.sh][11]               | Shell functions for Docker
-[salt-master/Dockerfile][10]  | Docker build file for the Salt master
+File                               | Description
+-----------------------------------|-----------------------------------------
+[docker.sh][11]                    | Shell functions for Docker
+[salt-master/Dockerfile][10]       | Dockerfile for the Salt master
+[master-docker-container.sls][12]  | Salt state file build & start salt-master
+
+Build and start the salt-master container with the docker CLI:
 
 ```bash
 # build a new salt-master container
@@ -65,6 +68,13 @@ Start salt-master container...
 >>> docker-attach-salt-master
 Detach with ctrl-p ctrl-q
 ...
+```
+
+Alternatively use salt instead:
+
+```bash
+# exec masterless Salt to build and start the salt-master container
+>>> salt-call-local-state salt/master-docker-container
 ```
 
 [00]: source_me.sh
