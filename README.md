@@ -21,6 +21,20 @@ The shell script [source_me.sh][00] adds the shell functions in [var/aliases/\*.
 >>> source source_me.sh
 ```
 
+This example uses a virtual machine setup with [vm-tools][16]:
+
+```bash
+# start a CentOS 7 virtual machine instance
+vm s centos7 lxcm01
+# install VCS and clone this repository
+vm ex lxcm01 -r '
+        yum install -y git bash-completion
+        git clone https://github.com/vpenso/mesos-example
+'
+# login as root
+vm lo lxcm01 -r
+```
+
 ## Docker
 
 File                             | Description
@@ -50,7 +64,7 @@ File                                    | Description
 ----------------------------------------|-----------------------------------------
 [var/aliases/docker.sh][11]             | Shell functions for Docker
 [salt-master/Dockerfile][10]            | Dockerfile for the Salt master
-[salt/master-docker-container.sls][12]  | Salt state file build & start salt-master
+[salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
 
 Using the Docker CLI:
 
@@ -92,7 +106,7 @@ Deploy a [Docker registry server][14] container:
 
 File                                       | Description
 -------------------------------------------|-----------------------------------------
-[docker/registry-docker-container.sls][15] | Salt state file pull & run a Docker registry container
+[docker/registry-docker-container.sls][15] | Salt state file to pull & run a Docker registry container
 
 ```bash
 >>> salt-call-local-state docker/registry-docker-container
@@ -115,3 +129,4 @@ File                                       | Description
 [13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
 [14]: https://docs.docker.com/registry/deploying/
 [15]: srv/salt/docker/registry-docker-container.sls
+[16]: https://github.com/vpenso/vm-tools
