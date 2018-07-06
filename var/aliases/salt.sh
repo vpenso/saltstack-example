@@ -16,7 +16,7 @@ salt-bootstrap-minion() {
                 echo Add SaltStack repository to Yum in /etc/yum.repos.d/salt.repo
                 cp $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo \
                    /etc/yum.repos.d/
-                echo Install salt-minion with Yum, cf. $SALT_DOCKER_LOGS/yum.log
+                echo Install salt-minion with Yum, cf. \$SALT_DOCKER_LOGS/yum.log
                 yum --assumeyes \
                     install salt-minion \
                     &> $SALT_DOCKER_LOGS/yum.log
@@ -34,7 +34,7 @@ salt-call-local-state() {
 echo 'salt-call-local-state-docker() -- Install Docker CE on localhost'
 salt-call-local-state-docker() {
         # run a masterless salt-minion
-        echo Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
+        echo Exec masterless Salt to install Docker CE, cf. \$SALT_DOCKER_LOGS/salt.log
         salt-call-local-state docker/docker-ce \
                   &>> $SALT_DOCKER_LOGS/salt.log
 }

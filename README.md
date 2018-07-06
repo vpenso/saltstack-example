@@ -32,13 +32,15 @@ File                 | Description
 # bootstrap salt-minion on localhost
 >>> salt-bootstrap-minion
 Add SaltStack repository to Yum in /etc/yum.repos.d/salt.repo
-Install salt-minion with Yum, cf. /root/saltstack-docker/var/log/yum.log
+Install salt-minion with Yum, cf. $SALT_DOCKER_LOGS/yum.log
 # use salt to install Docker
 >>> salt-call-local-state-docker 
-Exec masterless Salt to install Docker CE, cf. /root/saltstack-docker/var/log/salt.log
+Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
 ```
 
 ## Salt Master
+
+Build and run the "salt-master" docker container:
 
 File                               | Description
 -----------------------------------|-----------------------------------------
@@ -46,7 +48,7 @@ File                               | Description
 [salt-master/Dockerfile][10]       | Dockerfile for the Salt master
 [master-docker-container.sls][12]  | Salt state file build & start salt-master
 
-Build and start the salt-master container using the Docker CLI:
+Using the Docker CLI:
 
 ```bash
 # build a new salt-master container
@@ -70,7 +72,7 @@ Detach with ctrl-p ctrl-q
 ...
 ```
 
-Use the [Salt Docker states][13] to build and start the salt-master container:
+Using [Salt Docker states][13]:
 
 ```bash
 # exec masterless Salt to build and start the salt-master container
@@ -89,6 +91,6 @@ Use the [Salt Docker states][13] to build and start the salt-master container:
 [09]: var/aliases/salt.sh
 [10]: var/dockerfiles/salt-master
 [11]: var/aliases/docker.sh
-[12]: srv/salt/salt/master-docker-container
+[12]: srv/salt/salt/master-docker-container.sls
 [13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
 
