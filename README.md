@@ -46,7 +46,7 @@ File                               | Description
 [salt-master/Dockerfile][10]       | Dockerfile for the Salt master
 [master-docker-container.sls][12]  | Salt state file build & start salt-master
 
-Build and start the salt-master container with the docker CLI:
+Build and start the salt-master container using the Docker CLI:
 
 ```bash
 # build a new salt-master container
@@ -70,7 +70,7 @@ Detach with ctrl-p ctrl-q
 ...
 ```
 
-Alternatively use salt instead:
+Use the [Salt Docker states][13] to build and start the salt-master container:
 
 ```bash
 # exec masterless Salt to build and start the salt-master container
@@ -89,4 +89,6 @@ Alternatively use salt instead:
 [09]: var/aliases/salt.sh
 [10]: var/dockerfiles/salt-master
 [11]: var/aliases/docker.sh
+[12]: srv/salt/salt/master-docker-container
+[13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
 
