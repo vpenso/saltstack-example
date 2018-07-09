@@ -150,9 +150,12 @@ curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
 
 # Prometheus
 
-
+File                                       | Description
+-------------------------------------------|-----------------------------------------
+[var/aliases/prometheus.sh][22]            | Shell functions for Prometheus
 
 ```bash
+# start the Prometheus container from the private registry
 docker run --interactive \
            --tty --rm \
            --name prometheus \
@@ -183,3 +186,4 @@ docker run --interactive \
 [18]: https://hub.docker.com/u/prom/
 [20]: srv/salt/docker/docker-daemon-insecure.sls
 [21]: srv/salt/docker/docker-daemon-insecure.json
+[22]: var/aliases/prometheus.sh
