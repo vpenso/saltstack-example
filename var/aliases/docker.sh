@@ -1,10 +1,17 @@
-echo 'docker-search-repository-tags()  -- list tags from a repository on DockerHub'
-docker-search-repository-tags() {
-        local url="https://registry.hub.docker.com/v2/repositories/library/$1/tags/"
-        curl -s -S "$url" | \
-                jq '."results"[]["name"]' | \
-                tr -d '"' | \
-                sort -r
+DOCKER_LOCAL_REGISTRY='lxcm01:5000'
+
+export DOCKER_LOCAL_REGISTRY
+
+echo DOCKER_LOCAL_REGISTRY=$DOCKER_LOCAL_REGISTRY
+
+# echo 'docker-list-local-repository-catalog() -- List repositories in local registry'
+docker-list-local-repository-catalog() {
+        curl -S -X GET http://$DOCKER_LOCAL_REPOSITORY/v2/_catalog | jq '.'
+}
+
+echo 'docker-list-local-repository-tags() -- List local repository tags'
+docker-list-local-repository-tags() {
+        curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/$1/taggs/list | jq '.'
 }
 
 echo 'docker-build-salt-master() -- Build the salt-master container image'
