@@ -12,16 +12,29 @@ docker-build-salt-master() {
         docker build -t salt-master $SALT_DOCKER_PATH/var/dockerfiles/salt-master/
 }
 
-echo 'docker-run-salt-master() -- Run the salt-master container with a shell'
+echo 'docker-run-salt-master() -- Run salt-master service container'
 docker-run-salt-master() {
         echo Start salt-master container...
         docker run --detach \
                    --name salt-master \
                    --publish 4505:4505 \
                    --publish 4506:4506 \
-                   --volume $SALT_STATE_TREE/srv/salt:/srv/salt \
+                   --volume $SALT_STATE_TREE/:/srv/salt \
                    salt-master
 } 
+
+echo 'docker-run-prometheus() -- Run Prometheus service container'
+docker-run-prometheus() {
+        echo Start prometheus container
+        docker run --detach \
+                   --name prometheus \
+                   --publish 9090:9090 \
+                   --volume $SALT_STATE_TREE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+                   --mount source=prometheus,target=/promehteus \
+                   prom/prometheus -config.file=/etc/prometheus/prometheus.yml \
+                                   -storage.local.path=/prometheus \
+                                   -storage.local.memory-chunks=10000
+}
 
 echo 'docker-attach-salt-master() -- Attach to the salt-master daemon console'
 docker-attach-salt-master() {
@@ -31,6 +44,7 @@ docker-attach-salt-master() {
 
 echo 'docker-container-remove-all() -- Stop & remove all containers on localhost'
 docker-container-remove-all() {
-       docker container stop $(docker ps -a -q)
-       docker container prune -f
+        docker container stop $(docker ps -a -q)
+        docker container prune -f
 }
+
