@@ -39,16 +39,16 @@ docker-build-salt-master() -- Build the salt-master container image
 3. Build a Salt Master Docker container image
 4. Run the `salt-master` service container to **serve a local Salt state tree** [srv/salt](srv/salt)
 
-## Salt-Minion & Docker CE
+### Salt-Minion & Docker CE
 
-Required file from this repository:
+Required files:
 
-File                             | Description
----------------------------------|-----------------------------------------
-[var/aliases/salt.sh][09]        | Shell functions for SaltStack
-[salt.repo][08]                  | SaltStack Yum repository configuration
-[docker-ce.repo][07]             | Docker CE Yum repository configuration
-[docker-ce.sls][06]              | Salt state file to install Docker CE
+File                                    | Description
+----------------------------------------|-----------------------------------------
+[var/aliases/salt.sh][09]               | Shell functions for SaltStack
+[etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
+[srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
+[srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
 
 Command to execute:
 
@@ -62,15 +62,15 @@ Install salt-minion with Yum, cf. $SALT_DOCKER_LOGS/yum.log
 Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
 ```
 
-## Salt-Master Container 
+### Salt-Master Container 
 
 Build and run the "salt-master" docker container:
 
-File                                    | Description
-----------------------------------------|-----------------------------------------
-[var/aliases/docker.sh][11]             | Shell functions for Docker
-[salt-master/Dockerfile][10]            | Dockerfile for the Salt master
-[salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
+File                                             | Description
+-------------------------------------------------|-----------------------------------------
+[var/aliases/docker.sh][11]                      | Shell functions for Docker
+[var/dockerfiles/salt-master/Dockerfile][10]     | Dockerfile for the Salt master
+[srv/salt/salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
 
 Using the Docker CLI:
 
@@ -115,7 +115,7 @@ File                                       | Description
 [docker/registry-docker-container.sls][15] | Salt state file to pull & run a Docker registry container
 
 ```bash
->>> salt-call-local-state docker/registry-docker-container
+salt-call-local-state docker/registry-docker-container
 ```
 
 [Test an insecure registry][17] by configuring docker to disregard security for the local registry:

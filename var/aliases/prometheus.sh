@@ -15,8 +15,8 @@ prometheus-docker-images-to-local-registry() {
         docker tag prom/prometheus:$PROMETHEUS_VERSION \
                    lxcm01:5000/prometheus:$PROMETHEUS_VERSION
         docker tag prom/node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION \
-                   lxcm01:5000/node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION 
+                   lxcm01:5000/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION 
         docker push lxcm01:5000/prometheus:$PROMETHEUS_VERSION
-        docker push lxcm01:5000/node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION
+        docker push lxcm01:5000/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION
 
 }

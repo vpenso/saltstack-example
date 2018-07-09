@@ -6,12 +6,12 @@ echo DOCKER_LOCAL_REGISTRY=$DOCKER_LOCAL_REGISTRY
 
 # echo 'docker-list-local-repository-catalog() -- List repositories in local registry'
 docker-list-local-repository-catalog() {
-        curl -S -X GET http://$DOCKER_LOCAL_REPOSITORY/v2/_catalog | jq '.'
+        curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/_catalog | jq '.'
 }
 
 echo 'docker-list-local-repository-tags() -- List local repository tags'
 docker-list-local-repository-tags() {
-        curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/$1/taggs/list | jq '.'
+        curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/$1/tags/list | jq '.'
 }
 
 echo 'docker-build-salt-master() -- Build the salt-master container image'
