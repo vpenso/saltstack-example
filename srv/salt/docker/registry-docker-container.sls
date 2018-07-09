@@ -1,6 +1,6 @@
 docker_registry_container:
   docker_container.running:
-    - image: registry:latest
+    - image: registry:2.6.2
     - name: docker-registry
     - port_bindings: 
       - 5000:5000

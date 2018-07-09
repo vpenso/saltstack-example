@@ -105,48 +105,47 @@ Using [Salt Docker states][13]:
 
 ## Docker Registry Container
 
-
 Deploy a [Docker registry server][14] container:
 
 File                                       | Description
 -------------------------------------------|-----------------------------------------
-[docker/registry-docker-container.sls][15] | Salt state file to pull & run a Docker registry container
+[srv/salt/docker/registry-docker-container.sls][15] | Salt state file to pull & run a Docker registry container
+[srv/salt/docker/docker-daemon-insecure.sls][20]    | Salt state to configure Docker daemon
+[srv/salt/docker/docker-daemon-insecure.json][21]   | Docker daemon configuration file
+
+1. [Test an insecure registry][17] by configuring Docker daemon to disregard security for the local registry
+2. Install a Docker registry container from DockerHub
+3. Copy container images from DockerHub to the private registry
+4. Show the repositories on the private registry
 
 ```bash
+# exec masterless Salt to pull and run the Docker private registry container
 salt-call-local-state docker/registry-docker-container
+# allow docker daemon insecure acccess to the local registry
+salt-call-local-state docker/docker-daemon-insecure
+# the following function will pull, tag, abd push for the
+# prometheus and node-exporter container images
+prometheus-docker-images-to-local-registry
+# list repos in local registry
+docker-list-local-repository-catalog
 ```
 
-[Test an insecure registry][17] by configuring docker to disregard security for the local registry:
+Manual configuration:
 
 ```bash
 # write the Docker daemon configuration
 echo -e "{\n \"insecure-registries\" : [\"lxcm01:5000\"]\n}" > /etc/docker/daemon.json
 # restart the Docker daemon for the configuration to take effect
 systemctl restart docker
-```
-
-Pull [Prometheus from DockerHub][18] and push the container images to the local repository server:
-
-```bash
-# here an example for the Prometheus node-exporter
+# start the Docker registry container
+docker run -d -p 5000:5000 --restart=always --name docker-registry registry:2.6.2
+# pull the Prometheus node-exporter from DockerHub
 docker pull prom/node-exporter:v0.16.0
+# push it to the private registry
 docker tag prom/node-exporter:v0.16.0 localhost:5000/prometheus-node-exporter:v0.16.0
 docker push localhost:5000/prometheus-node-exporter:v0.16.0
-# the following function will pull, tag, push for the 
-# prometheus and node-exporter container images
-prometheus-docker-images-to-local-registry
-```
-
-List all content of the local repository:
-
-```bash
->>> curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
-{
-  "repositories": [
-    "prometheus",
-    "prometheus-node-exporter"
-  ]
-}
+# list all content of the local repository:
+curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
 ```
 
 [00]: source_me.sh
@@ -168,3 +167,5 @@ List all content of the local repository:
 [16]: https://github.com/vpenso/vm-tools
 [17]: https://docs.docker.com/registry/insecure/
 [18]: https://hub.docker.com/u/prom/
+[20]: srv/salt/docker/docker-daemon-insecure.sls
+[21]: srv/salt/docker/docker-daemon-insecure.json
