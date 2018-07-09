@@ -1,4 +1,4 @@
-# SaltStack with Docker Examples
+# SaltStack and Docker: Examples
 
 List of components used in this project:
 
@@ -25,8 +25,6 @@ vm lo lxcm01 -r
 # source the environment
 [root@lxcm01 saltstack-docker-example] source source_me.sh 
 SALT_DOCKER_PATH=/root/saltstack-docker-example
-docker-search-repository-tags()  -- list tags from a repository on DockerHub
-docker-build-salt-master() -- Build the salt-master container image
 ...
 ```
 
