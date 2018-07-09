@@ -37,6 +37,7 @@ echo 'prometheus-node-exporter-docker-container() -- Run Prometheus node-exporte
 prometheus-node-exporter-docker-container() {
         echo Start node-exporter container
         docker run --detach \
+                   --name prometheus-node-exporter \
                    --publish 9100:9100 \
                    --volume "/proc:/host/proc" \
                    --volume "/sys:/host/sys" \
