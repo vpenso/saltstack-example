@@ -30,10 +30,23 @@ docker-run-prometheus() {
                    --name prometheus \
                    --publish 9090:9090 \
                    --volume $SALT_STATE_TREE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
-                   --mount source=prometheus,target=/promehteus \
                    prom/prometheus -config.file=/etc/prometheus/prometheus.yml \
                                    -storage.local.path=/prometheus \
                                    -storage.local.memory-chunks=10000
+}
+
+echo 'docker-run-prometheus-node-exporter() -- Run Prometheus node-exporter container'
+docker-run-prometheus-node-exporter() {
+        echo Start node-exporter container
+        docker run --detach \
+                   --publish 9100:9100 \
+                   --volume "/proc:/host/proc" \
+                   --volume "/sys:/host/sys" \
+                   --volume "/:/rootfs" \
+                   --net="host" \
+                   prom/node-exporter -collector.procfs /host/proc \
+                                      -collector.sysfs /host/proc \
+                                      -collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
 }
 
 echo 'docker-attach-salt-master() -- Attach to the salt-master daemon console'
