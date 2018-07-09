@@ -124,7 +124,7 @@ File                                       | Description
 # write the Docker daemon configuration
 echo -e "{\n \"insecure-registries\" : [\"lxcm01:5000\"]\n}" > /etc/docker/daemon.json
 # restart the Docker daemon for the configuration to take effect
-systemctl docker restart
+systemctl restart docker
 ```
 
 Pull [Prometheus from DockerHub][18] and push the container images to the local repository server:

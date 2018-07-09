@@ -23,6 +23,8 @@ salt-bootstrap-minion() {
                 echo Install salt-minion with Yum, cf. \$SALT_DOCKER_LOGS/yum.log
                 yum --assumeyes \
                     install salt-minion \
+                            epel-release \
+                            jq \
                     &> $SALT_DOCKER_LOGS/yum.log
         fi
 
