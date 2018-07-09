@@ -28,7 +28,7 @@ SALT_DOCKER_PATH=/root/saltstack-docker-example
 ...
 ```
 
-# Deployment
+# SaltStack
 
 **Boostrap localhost to run a Salt master as a service in a Docker container:**
 
@@ -102,7 +102,7 @@ Detach with ctrl-p ctrl-q
 ```
 
 
-## Docker Registry Container
+# Docker Registry
 
 Deploy a [Docker registry server][14] container:
 
@@ -124,7 +124,7 @@ salt-call-local-state docker/registry-docker-container
 salt-call-local-state docker/docker-daemon-insecure
 # the following function will pull, tag, and push for the
 # prometheus and node-exporter container images
-prometheus-docker-images-to-local-registry
+prometheus-dockerhub-images-to-local-registry
 # list repos in local registry
 docker-list-local-repository-catalog
 ```
@@ -147,6 +147,20 @@ docker push localhost:5000/prometheus-node-exporter:v0.16.0
 # list all content of the local repository
 curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
 ```
+
+# Prometheus
+
+
+
+```bash
+docker run --interactive \
+           --tty --rm \
+           --name prometheus \
+           --publish 9090:9090 \
+           --volume $SALT_STATE_TREE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+           $DOCKER_LOCAL_REGISTRY/prometheus:$PROMETHEUS_VERSION
+```
+
 
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"

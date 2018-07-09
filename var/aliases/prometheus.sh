@@ -4,8 +4,8 @@ PROMETHEUS_NODE_EXPORTER_VERSION='v0.16.0'
 export PROMETHEUS_VERSION \
        PROMETHEUS_NODE_EXPORTER_VERSION
 
-echo 'prometheus-docker-images-to-local-registry() -- Copy Prometheus container images to local registry'
-prometheus-docker-images-to-local-registry() {
+echo 'prometheus-dockerhub-images-to-local-registry() -- Copy Prometheus container images to local registry'
+prometheus-dockerhub-images-to-local-registry() {
         
         echo Pull Prometheus container images from DockerHub
         docker pull prom/prometheus:$PROMETHEUS_VERSION
@@ -19,4 +19,29 @@ prometheus-docker-images-to-local-registry() {
         docker push lxcm01:5000/prometheus:$PROMETHEUS_VERSION
         docker push lxcm01:5000/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION
 
+}
+
+echo 'prometheus-docker-container() -- Run Prometheus service container'
+prometheus-docker-container() {
+        echo Start prometheus container
+        docker run --detach \
+                   --name prometheus \
+                   --publish 9090:9090 \
+                   --volume $SALT_STATE_TREE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+                   prom/prometheus --config.file=/etc/prometheus/prometheus.yml \
+                                   --storage.tsdb.path=/prometheus
+}
+
+echo 'prometheus-node-exporter-docker-container() -- Run Prometheus node-exporter container'
+prometheus-node-exporter-docker-container() {
+        echo Start node-exporter container
+        docker run --detach \
+                   --publish 9100:9100 \
+                   --volume "/proc:/host/proc" \
+                   --volume "/sys:/host/sys" \
+                   --volume "/:/rootfs" \
+                   --net="host" \
+                   prom/node-exporter --collector.procfs /host/proc \
+                                      --collector.sysfs /host/sys \
+                                      --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
 }
