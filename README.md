@@ -118,7 +118,6 @@ File                                       | Description
 >>> salt-call-local-state docker/registry-docker-container
 ```
 
-
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"
 [02]: var/aliases/

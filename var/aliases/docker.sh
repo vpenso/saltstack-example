@@ -59,4 +59,3 @@ docker-container-remove-all() {
         docker container stop $(docker ps -a -q)
         docker container prune -f
 }
-
