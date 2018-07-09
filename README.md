@@ -70,7 +70,14 @@ File                                             | Description
 [var/dockerfiles/salt-master/Dockerfile][10]     | Dockerfile for the Salt master
 [srv/salt/salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
 
-Using the Docker CLI:
+```bash
+# exec masterless Salt to build and start the salt-master container
+>>> salt-call-local-state salt/master-docker-container
+# inspect the salt-master container
+>>> docker container inspect salt-master
+```
+
+Manual configuration
 
 ```bash
 # build a new salt-master container
@@ -94,14 +101,6 @@ Detach with ctrl-p ctrl-q
 ...
 ```
 
-Using [Salt Docker states][13]:
-
-```bash
-# exec masterless Salt to build and start the salt-master container
->>> salt-call-local-state salt/master-docker-container
-# inspect the salt-master container
->>> docker container inspect salt-master
-```
 
 ## Docker Registry Container
 
@@ -123,7 +122,7 @@ File                                       | Description
 salt-call-local-state docker/registry-docker-container
 # allow docker daemon insecure acccess to the local registry
 salt-call-local-state docker/docker-daemon-insecure
-# the following function will pull, tag, abd push for the
+# the following function will pull, tag, and push for the
 # prometheus and node-exporter container images
 prometheus-docker-images-to-local-registry
 # list repos in local registry
@@ -144,7 +143,8 @@ docker pull prom/node-exporter:v0.16.0
 # push it to the private registry
 docker tag prom/node-exporter:v0.16.0 localhost:5000/prometheus-node-exporter:v0.16.0
 docker push localhost:5000/prometheus-node-exporter:v0.16.0
-# list all content of the local repository:
+# do the same for the prom/prometheus container image
+# list all content of the local repository
 curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
 ```
 
