@@ -12,14 +12,14 @@ This example uses a virtual machine setup with [vm-tools][16]:
 
 ```bash
 # start a CentOS 7 virtual machine instance
->>> vm s centos7 lxcm01
+vm s centos7 lxcm01
 # install VCS and clone this repository
->>> vm ex lxcm01 -r '
+vm ex lxcm01 -r '
         yum install -qy git bash-completion
         git clone https://github.com/vpenso/saltstack-docker-example
 '
 # login as root
->>> vm lo lxcm01 -r
+vm lo lxcm01 -r
 # change to the repository
 [root@lxcm01 ~] cd saltstack-docker-example/
 # source the environment

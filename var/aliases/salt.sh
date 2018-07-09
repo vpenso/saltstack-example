@@ -20,12 +20,14 @@ salt-bootstrap-minion() {
                 cp $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo \
                    /etc/yum.repos.d/
 
+                # enable the EPEL repository
+                yum install --assumeyes epel-release \
+                    &>> $SALT_DOCKER_LOGS/yum.log
+
                 echo Install salt-minion with Yum, cf. \$SALT_DOCKER_LOGS/yum.log
                 yum --assumeyes \
-                    install salt-minion \
-                            epel-release \
-                            jq \
-                    &> $SALT_DOCKER_LOGS/yum.log
+                    install salt-minion jq \
+                    &>> $SALT_DOCKER_LOGS/yum.log
         fi
 
 }
