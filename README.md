@@ -55,7 +55,7 @@ Command to execute:
 >>> salt-bootstrap-minion
 Add SaltStack repository to Yum in /etc/yum.repos.d/salt.repo
 Install salt-minion with Yum, cf. $SALT_DOCKER_LOGS/yum.log
-# use salt to install Docker
+# use masterless Salt to install Docker
 >>> salt-call-local-state-docker 
 Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
 ```
@@ -72,9 +72,9 @@ File                                             | Description
 
 ```bash
 # exec masterless Salt to build and start the salt-master container
->>> salt-call-local-state salt/master-docker-container
+salt-call-local-state salt/master-docker-container
 # inspect the salt-master container
->>> docker container inspect salt-master
+docker container inspect salt-master
 ```
 
 Manual configuration
@@ -154,6 +154,14 @@ File                                       | Description
 -------------------------------------------|-----------------------------------------
 [var/aliases/prometheus.sh][22]            | Shell functions for Prometheus
 
+
+```bash
+# access Prometheus WUI from the VM host
+$BROWSER http://$(vm ip lxcm01):9090/targets
+```
+
+Manual configuration
+
 ```bash
 # start the Prometheus container from the private registry
 docker run --interactive \
@@ -162,8 +170,20 @@ docker run --interactive \
            --publish 9090:9090 \
            --volume $SALT_STATE_TREE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
            $DOCKER_LOCAL_REGISTRY/prometheus:$PROMETHEUS_VERSION
+# start the Prometheus node-exporter...
+docker run --interactive \
+           --tty --rm \
+           --name prometheus-node-exporter \
+           --publish 9100:9100 \
+           --volume "/proc:/host/proc" \
+           --volume "/sys:/host/sys" \
+           --volume "/:/rootfs" \
+           --net="host" \
+           $DOCKER_LOCAL_REGISTRY/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION \
+                            --path.procfs /host/proc \
+                            --path.sysfs /host/sys \
+                            --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
 ```
-
 
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"

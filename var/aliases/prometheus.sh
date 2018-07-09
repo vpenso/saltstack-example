@@ -43,7 +43,7 @@ prometheus-node-exporter-docker-container() {
                    --volume "/:/rootfs" \
                    --net="host" \
                    $DOCKER_LOCAL_REGISTRY/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION \
-                            --collector.procfs /host/proc \
-                            --collector.sysfs /host/sys \
+                            --path.procfs /host/proc \
+                            --path.sysfs /host/sys \
                             --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
 }
