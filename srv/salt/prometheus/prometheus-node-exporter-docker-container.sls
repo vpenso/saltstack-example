@@ -8,8 +8,8 @@ prometheus_node_exporter_docker_container:
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($|/)'
     - port_bindings: 9100:9100
     - restart_policy: always
-    - volumes:
-      - /proc:/host/proc
-      - /sys:/host/sys
-      - /:/rootfs
+    - binds:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
 
