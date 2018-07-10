@@ -42,7 +42,6 @@ prometheus-node-exporter-docker-container() {
                    --volume "/proc:/host/proc" \
                    --volume "/sys:/host/sys" \
                    --volume "/:/rootfs" \
-                   --net="host" \
                    $DOCKER_LOCAL_REGISTRY/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION \
                             --path.procfs /host/proc \
                             --path.sysfs /host/sys \

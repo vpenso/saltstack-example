@@ -4,7 +4,7 @@ export DOCKER_LOCAL_REGISTRY
 
 echo DOCKER_LOCAL_REGISTRY=$DOCKER_LOCAL_REGISTRY
 
-# echo 'docker-list-local-repository-catalog() -- List repositories in local registry'
+echo 'docker-list-local-repository-catalog() -- List repositories in local registry'
 docker-list-local-repository-catalog() {
         curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/_catalog | jq '.'
 }

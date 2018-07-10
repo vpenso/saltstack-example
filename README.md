@@ -122,8 +122,7 @@ File                                       | Description
 salt-call-local-state docker/registry-docker-container
 # allow docker daemon insecure acccess to the local registry
 salt-call-local-state docker/docker-daemon-insecure
-# the following function will pull, tag, and push for the
-# prometheus and node-exporter container images
+# pull, tag, and push prometheus and node-exporter container images
 prometheus-dockerhub-images-to-local-registry
 # list repos in local registry
 docker-list-local-repository-catalog
@@ -178,7 +177,6 @@ docker run --interactive \
            --volume "/proc:/host/proc" \
            --volume "/sys:/host/sys" \
            --volume "/:/rootfs" \
-           --net="host" \
            $DOCKER_LOCAL_REGISTRY/prometheus-node-exporter:$PROMETHEUS_NODE_EXPORTER_VERSION \
                             --path.procfs /host/proc \
                             --path.sysfs /host/sys \
