@@ -206,6 +206,7 @@ Deploy a [Promethes server][24] and a Prometheus [Node exporter][25] in dedicate
 
 File                                                        | Description
 ------------------------------------------------------------|-----------------------------------------
+[srv/salt/prometheus/prometheus.yml][28]                    | Prometheus server configuration file
 [var/aliases/prometheus.sh][22]                             | Shell functions for Prometheus
 [srv/salt/prometheus/prometheus-docker-container.sls][23]   | Salt state to configure the Prometheus docker container
 [.../prometheus-node-exporter-docker-container.sls][27]     | Salt state configuration for the node exporter
@@ -317,3 +318,4 @@ Both commands are wrapped with the shell functions:
 [25]: https://github.com/prometheus/node_exporter
 [26]: https://docs.docker.com/config/thirdparty/prometheus/
 [27]: srv/salt/prometheus/prometheus-node-exporter-docker-container.sls
+[28]: srv/salt/prometheus/prometheus.yml
