@@ -7,6 +7,7 @@ Component  | Description                   | Cf.
 CentOS 7   | Operating system              | <https://centos.org>
 SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
+Prometheus | Time-series database          | <https://prometheus.io>
 
 This example uses a virtual machine setup with [vm-tools][16]:
 
@@ -15,6 +16,7 @@ This example uses a virtual machine setup with [vm-tools][16]:
 vm s centos7 lxcm01
 # install VCS and clone this repository
 vm ex lxcm01 -r '
+        systemctl disable --now firewalld
         yum install -qy git bash-completion
         git clone https://github.com/vpenso/saltstack-docker-example
 '
@@ -149,11 +151,12 @@ curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
 
 # Prometheus
 
+Deploy a [Promethes server][24] and a Prometheus [Node exporter][25] in dedicated containers:
+
 File                                                        | Description
 ------------------------------------------------------------|-----------------------------------------
 [var/aliases/prometheus.sh][22]                             | Shell functions for Prometheus
 [srv/salt/prometheus/prometheus-docker-container.sls][23]   | Salt state to configure the Prometheus docker container
-
 
 ```bash
 # exec masterless Salt to run a Prometheus docker container
@@ -162,7 +165,7 @@ salt-call-local-state prometheus/prometheus-docker-container
 $BROWSER http://$(vm ip lxcm01):9090/targets
 ```
 
-Manual configuration
+Run the containers using the Docker CLI:
 
 ```bash
 # start the Prometheus container from the private registry
@@ -209,3 +212,5 @@ docker run --interactive \
 [21]: srv/salt/docker/docker-daemon-insecure.json
 [22]: var/aliases/prometheus.sh
 [23]: srv/salt/prometheus/prometheus-docker-container.sls
+[24]: https://github.com/prometheus/prometheus
+[25]: https://github.com/prometheus/node_exporter
