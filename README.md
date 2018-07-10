@@ -29,16 +29,11 @@ vm ex lxcm01 -r '
 
 # SaltStack
 
-**Boostrap localhost to run a Salt master as a service in a Docker container:**
-
-1. Install Salt minion on the host
-2. Run Salt [masterless][04] to install [Docker CE][05]
-3. Build a Salt Master Docker container image
-4. Run the `salt-master` service container to **serve a local Salt state tree** [srv/salt](srv/salt)
+Bootstrap the VM to run a Salt master as a service in a Docker container.
 
 ### Salt-Minion & Docker CE
 
-Required files:
+Install Salt minion on local host, and run Salt [masterless][04] to install [Docker CE][05]:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
@@ -47,9 +42,9 @@ File                                    | Description
 [srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
 [srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
 
-Use following shell functions to install the Salt and Docker CE:
+Use following shell functions to install Salt and Docker CE:
 
-- [salt-bootstrap-minion()][09] - Install salt-minion on localhost
+- [salt-bootstrap-minion()][09] - Install the salt-minion package on localhost
 - [salt-call-local-state-docker()][01] - Install Docker CE on localhost using masterless Salt
 
 ```bash
@@ -97,37 +92,40 @@ File                                             | Description
 [var/dockerfiles/salt-master/Dockerfile][10]     | Dockerfile for the Salt master
 [srv/salt/salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
 
+Use following shell functions to install the Salt master docker container:
+
 - [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
+- [docker-build-salt-master()][11] -  Build the salt-master container image
+- [docker-run-salt-master()][11] - Run salt-master service container
+- [docker-attach-salt-master()][11] - Attach to the salt-master daemon console
+- [docker-container-remove-all()][11] - Stop & remove all containers on localhost
 
 ```bash
 # exec masterless Salt to build and start the salt-master container
-salt-call-local-state salt/master-docker-container
-# inspect the salt-master container
-docker container inspect salt-master
+vm ex lxcm01 -r salt-call-local-state salt/master-docker-container
 ```
 
-Manual configuration
+Login to the VM. Build and run the salt-master container with the Docker CLI:
 
 ```bash
 # build a new salt-master container
->>> docker-build-salt-master
-# show the generated container images
+>>> docker build -t salt-master $SALT_DOCKER_PATH/var/dockerfiles/salt-master/
 >>> docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 salt-master         latest              af328deacce0        50 seconds ago      482MB
 centos              latest              49f7960eb7e4        4 weeks ago         200MB
 # start the salt-master service as docker container
->>> docker-run-salt-master
-Start salt-master container...
-1eb0156818119156fb0de66a65348ca70f596df5b386b3e3ad82e1c54a2cb59c
-# check if the container is running
+>>> docker run --detach \
+               --name salt-master \
+               --publish 4505:4505 \
+               --publish 4506:4506 \
+               --volume $SALT_STATE_TREE/:/srv/salt \
+           salt-master
 >>> docker ps
 # check the service log
 >>> docker exec salt-master cat /var/log/salt/master
-# attach to the container console
->>> docker-attach-salt-master
-Detach with ctrl-p ctrl-q
-...
+# inspect the salt-master container
+>>> docker container inspect salt-master
 ```
 
 
@@ -185,6 +183,13 @@ File                                                        | Description
 [var/aliases/prometheus.sh][22]                             | Shell functions for Prometheus
 [srv/salt/prometheus/prometheus-docker-container.sls][23]   | Salt state to configure the Prometheus docker container
 
+```bash
+# exec masterless Salt to run a Prometheus docker container
+vm ex lxcm01 -r salt-call-local-state prometheus/prometheus-docker-container
+# access Prometheus WUI from the VM host
+$BROWSER http://$(vm ip lxcm01):9090/targets
+```
+
 Run the containers using the Docker CLI:
 
 ```bash
@@ -214,12 +219,6 @@ Both commands are wrapped with the shell functions:
 - [prometheus-docker-container()][22] - Run Prometheus service container
 - [prometheus-node-exporter-docker-container()][22] - Run Prometheus service container
 
-```bash
-# exec masterless Salt to run a Prometheus docker container
-salt-call-local-state prometheus/prometheus-docker-container
-# access Prometheus WUI from the VM host
-$BROWSER http://$(vm ip lxcm01):9090/targets
-```
 
 
 [Collect Docker metrics with Prometheus][26]
