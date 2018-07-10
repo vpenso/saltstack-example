@@ -1,6 +1,7 @@
 prometheus_docker_container:
   file.managed:
     - name: /etc/prometheus/prometheus.yml
+    - makedirs: True
     - source: salt://prometheus/prometheus.yml
   docker_container.running:
     - name: prometheus
