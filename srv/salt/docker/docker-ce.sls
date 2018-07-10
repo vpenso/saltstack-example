@@ -1,9 +1,10 @@
+# add the official Docker package repositories to Yum
 docker_ce_package_repo:
   file.managed:
     - name: /etc/yum.repos.d/docker-ce.repo
     - source: salt://docker/docker-ce.repo
 
-
+# install the Docker CE packages including dependecies
 docker_ce_packages:
   pkg.latest:
     - refresh: True
@@ -14,6 +15,7 @@ docker_ce_packages:
       - docker-ce
       - docker-python
 
+# make sure docker daemon is present
 docker_service:
   service.running:
     - name: docker.service

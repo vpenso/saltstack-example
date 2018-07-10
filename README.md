@@ -25,8 +25,6 @@ vm ex lxcm01 -r '
         # load the repository environment on login
         echo "source $HOME/saltstack-docker-example/source_me.sh" >> $HOME/.bashrc
 '
-# login as root
-vm lo lxcm01 -r
 ```
 
 # SaltStack
@@ -44,8 +42,8 @@ Required files:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
-[var/aliases/salt.sh][09]               | Shell functions for SaltStack
 [etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
+[var/aliases/salt.sh][09]               | Shell functions for SaltStack
 [srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
 [srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
 
@@ -55,12 +53,38 @@ Use following shell functions to install the Salt and Docker CE:
 - [salt-call-local-state-docker()][01] - Install Docker CE on localhost using masterless Salt
 
 ```bash
+# bootstrap Salt and Docker on localhost 
 vm ex lxcm01 -r '
-        # bootstrap salt-minion on localhost
         salt-bootstrap-minion
-        # use masterless Salt to install Docker
         salt-call-local-state-docker
 '
+```
+
+Docker CE is installed with following Salt configuration (cf [docker-ce.sls][06]):
+
+```sls
+# add the official Docker package repositories to Yum
+docker_ce_package_repo:
+  file.managed:
+    - name: /etc/yum.repos.d/docker-ce.repo
+    - source: salt://docker/docker-ce.repo
+
+# install the Docker CE packages including dependecies
+docker_ce_packages:
+  pkg.latest:
+    - refresh: True
+    - pkgs:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+      - docker-ce
+      - docker-python
+
+# make sure docker daemon is present
+docker_service:
+  service.running:
+    - name: docker.service
+    - enable: True
 ```
 
 ### Salt-Master Container 

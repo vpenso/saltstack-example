@@ -19,10 +19,7 @@ export SALT_DOCKER_PATH=$__dir
 unset __dir
 unset __source
 
-echo SALT_DOCKER_PATH=$SALT_DOCKER_PATH
-
 for file in `\ls $SALT_DOCKER_PATH/var/aliases/*.sh`
 do 
   source $file
 done
-
