@@ -27,6 +27,7 @@ prometheus-docker-container() {
         docker run --detach \
                    --name prometheus \
                    --publish 9090:9090 \
+                   --restart always \
                    --volume $SALT_STATE_TREE/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
                    $DOCKER_LOCAL_REGISTRY/prometheus:$PROMETHEUS_VERSION \
                             --config.file=/etc/prometheus/prometheus.yml \
@@ -39,6 +40,7 @@ prometheus-node-exporter-docker-container() {
         docker run --detach \
                    --name prometheus-node-exporter \
                    --publish 9100:9100 \
+                   --restart always \
                    --volume "/proc:/host/proc" \
                    --volume "/sys:/host/sys" \
                    --volume "/:/rootfs" \

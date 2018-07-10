@@ -14,20 +14,19 @@ This example uses a virtual machine setup with [vm-tools][16]:
 ```bash
 # start a CentOS 7 virtual machine instance
 vm s centos7 lxcm01
-# install VCS and clone this repository
+# prepare the VM
 vm ex lxcm01 -r '
+        # diable the firewall
         systemctl disable --now firewalld
+        # install Git
         yum install -qy git bash-completion
+        # clone this repository
         git clone https://github.com/vpenso/saltstack-docker-example
+        # load the repository environment on login
+        echo "source $HOME/saltstack-docker-example/source_me.sh" >> $HOME/.bashrc
 '
 # login as root
 vm lo lxcm01 -r
-# change to the repository
-[root@lxcm01 ~] cd saltstack-docker-example/
-# source the environment
-[root@lxcm01 saltstack-docker-example] source source_me.sh 
-SALT_DOCKER_PATH=/root/saltstack-docker-example
-...
 ```
 
 # SaltStack
@@ -158,13 +157,6 @@ File                                                        | Description
 [var/aliases/prometheus.sh][22]                             | Shell functions for Prometheus
 [srv/salt/prometheus/prometheus-docker-container.sls][23]   | Salt state to configure the Prometheus docker container
 
-```bash
-# exec masterless Salt to run a Prometheus docker container
-salt-call-local-state prometheus/prometheus-docker-container
-# access Prometheus WUI from the VM host
-$BROWSER http://$(vm ip lxcm01):9090/targets
-```
-
 Run the containers using the Docker CLI:
 
 ```bash
@@ -188,6 +180,18 @@ docker run --interactive \
                             --path.sysfs /host/sys \
                             --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
 ```
+
+Both commands are wrapped with the shell functions [prometheus-docker-container()][22] and [prometheus-node-exporter-docker-container()][22].
+
+```bash
+# exec masterless Salt to run a Prometheus docker container
+vn ex lxcm01 -r salt-call-local-state prometheus/prometheus-docker-container
+# access Prometheus WUI from the VM host
+$BROWSER http://$(vm ip lxcm01):9090/targets
+```
+
+
+[Collect Docker metrics with Prometheus][26]
 
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"
@@ -214,3 +218,4 @@ docker run --interactive \
 [23]: srv/salt/prometheus/prometheus-docker-container.sls
 [24]: https://github.com/prometheus/prometheus
 [25]: https://github.com/prometheus/node_exporter
+[26]: https://docs.docker.com/config/thirdparty/prometheus/
