@@ -1,4 +1,4 @@
-prometheus_service:
+prometheus_docker_container:
   file.managed:
     - name: /etc/prometheus/prometheus.yml
     - source: salt://prometheus.prometheus.yml

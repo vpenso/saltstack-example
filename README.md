@@ -149,12 +149,15 @@ curl -s -X GET http://localhost:5000/v2/_catalog | jq '.'
 
 # Prometheus
 
-File                                       | Description
--------------------------------------------|-----------------------------------------
-[var/aliases/prometheus.sh][22]            | Shell functions for Prometheus
+File                                                        | Description
+------------------------------------------------------------|-----------------------------------------
+[var/aliases/prometheus.sh][22]                             | Shell functions for Prometheus
+[srv/salt/prometheus/prometheus-docker-container.sls][23]   | Salt state to configure the Prometheus docker container
 
 
 ```bash
+# exec masterless Salt to run a Prometheus docker container
+salt-call-local-state prometheus/prometheus-docker-container
 # access Prometheus WUI from the VM host
 $BROWSER http://$(vm ip lxcm01):9090/targets
 ```
@@ -205,3 +208,4 @@ docker run --interactive \
 [20]: srv/salt/docker/docker-daemon-insecure.sls
 [21]: srv/salt/docker/docker-daemon-insecure.json
 [22]: var/aliases/prometheus.sh
+[23]: srv/salt/prometheus/prometheus-docker-container.sls
