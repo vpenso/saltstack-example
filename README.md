@@ -161,23 +161,27 @@ File                                       | Description
 [srv/salt/docker/docker-daemon-insecure.sls][20]    | Salt state to configure Docker daemon
 [srv/salt/docker/docker-daemon-insecure.json][21]   | Docker daemon configuration file
 
-1. [Test an insecure registry][17] by configuring Docker daemon to disregard security for the local registry
-2. Install a Docker registry container from DockerHub
-3. Copy container images from DockerHub to the private registry
-4. Show the repositories on the private registry
+
+Execute masterless Salt to pull and run a private docker registry. Configure the docker daemon on pull from [an insecure registry][17]:
+
+* [prometheus-dockerhub-images-to-local-registry][22] - Copy the Prometheus and Node Exporter container images from DockerHub to the local registry
+* [docker-list-local-repository-catalog][11] - List container repositories on the local registry
+* [docker-list-local-repository-tags()][11] -  List tags for a given container repository on the local registry
 
 ```bash
-# exec masterless Salt to pull and run the Docker private registry container
-salt-call-local-state docker/registry-docker-container
-# allow docker daemon insecure acccess to the local registry
-salt-call-local-state docker/docker-daemon-insecure
-# pull, tag, and push prometheus and node-exporter container images
-prometheus-dockerhub-images-to-local-registry
-# list repos in local registry
-docker-list-local-repository-catalog
+vm ex lxcm01 -r '
+        # exec masterless Salt to pull and run the Docker private registry container
+        salt-call-local-state docker/registry-docker-container
+        # allow docker daemon insecure acccess to the local registry
+        salt-call-local-state docker/docker-daemon-insecure
+        # pull, tag, and push prometheus and node-exporter container images
+        prometheus-dockerhub-images-to-local-registry
+        # list repos in local registry
+        docker-list-local-repository-catalog
+'
 ```
 
-Manual configuration:
+Alternatively login to the VM and configure the components manually:
 
 ```bash
 # write the Docker daemon configuration
@@ -257,7 +261,7 @@ Both commands are wrapped with the shell functions:
 [09]: var/aliases/salt.sh
 [10]: var/dockerfiles/salt-master
 [11]: var/aliases/docker.sh
-[12]: srv/salt/salt/master-docker-container.sls
+[12]: srv/salt/salt/salt-master-docker-container.sls
 [13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
 [14]: https://docs.docker.com/registry/deploying/
 [15]: srv/salt/docker/registry-docker-container.sls

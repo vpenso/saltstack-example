@@ -2,15 +2,16 @@ DOCKER_LOCAL_REGISTRY='lxcm01:5000'
 
 export DOCKER_LOCAL_REGISTRY
 
-
-echo 'docker-list-local-repository-catalog() -- List repositories in local registry'
 docker-list-local-repository-catalog() {
+
         curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/_catalog | jq '.'
+
 }
 
-echo 'docker-list-local-repository-tags() -- List local repository tags'
 docker-list-local-repository-tags() {
+
         curl -s -X GET http://$DOCKER_LOCAL_REGISTRY/v2/$1/tags/list | jq '.'
+
 }
 
 docker-build-salt-master() {
@@ -32,11 +33,15 @@ docker-run-salt-master() {
 } 
 
 docker-attach-salt-master() {
+
         echo Detach with ctrl-p ctrl-q
         docker attach salt-master
+
 }
 
 docker-container-remove-all() {
+
         docker container stop $(docker ps -a -q)
         docker container prune -f
+
 }
