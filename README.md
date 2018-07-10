@@ -45,7 +45,8 @@ File                                    | Description
 Use following shell functions to install Salt and Docker CE:
 
 - [salt-bootstrap-minion()][09] - Install the salt-minion package on localhost
-- [salt-call-local-state-docker()][01] - Install Docker CE on localhost using masterless Salt
+- [salt-call-local-state-docker()][09] - Install Docker CE on localhost using masterless Salt
+- [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
 
 ```bash
 # bootstrap Salt and Docker on localhost 
@@ -86,26 +87,41 @@ docker_service:
 
 Build and run the "salt-master" docker container:
 
-File                                             | Description
--------------------------------------------------|-----------------------------------------
-[var/aliases/docker.sh][11]                      | Shell functions for Docker
-[var/dockerfiles/salt-master/Dockerfile][10]     | Dockerfile for the Salt master
-[srv/salt/salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
+File                                                  | Description
+------------------------------------------------------|-----------------------------------------
+[var/aliases/docker.sh][11]                           | Shell functions for Docker
+[var/dockerfiles/salt-master/Dockerfile][10]          | Dockerfile for the Salt master
+[srv/salt/salt/salt-master-docker-container.sls][12]  | Salt state file to build & run salt-master container
 
-Use following shell functions to install the Salt master docker container:
 
-- [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
-- [docker-build-salt-master()][11] -  Build the salt-master container image
-- [docker-run-salt-master()][11] - Run salt-master service container
-- [docker-attach-salt-master()][11] - Attach to the salt-master daemon console
-- [docker-container-remove-all()][11] - Stop & remove all containers on localhost
+Execute masterless Salt to build and start the salt-master container on localhost:
 
 ```bash
-# exec masterless Salt to build and start the salt-master container
-vm ex lxcm01 -r salt-call-local-state salt/master-docker-container
+vm ex lxcm01 -r salt-call-local-state salt/salt-master-docker-container
 ```
 
-Login to the VM. Build and run the salt-master container with the Docker CLI:
+Using following Salt configuration (cf. [salt-master-docker-container.sls][12]):
+
+```sls
+docker_build_salt_master:
+  docker_image.present:
+    - name: salt-master
+    - build: {{ salt['environ.get']('SALT_DOCKER_PATH') }}/var/dockerfiles/salt-master
+    - tag: latest
+
+docker_run_salt_master:
+  docker_container.running:
+    - name: salt-master
+    - image: salt-master:latest
+    - restart_policy: always
+    - port_bindings:
+      - 4505:4505
+      - 4506:4506
+    - binds:
+      - {{ salt['environ.get']('SALT_STATE_TREE') }}:/srv/salt:ro
+```
+
+Alternatively login to the VM to build and run the salt-master container using the Docker CLI:
 
 ```bash
 # build a new salt-master container
@@ -128,6 +144,12 @@ centos              latest              49f7960eb7e4        4 weeks ago         
 >>> docker container inspect salt-master
 ```
 
+The commands above are wrapped by the follwoing shell functions:
+
+- [docker-build-salt-master()][11] -  Build the salt-master container image
+- [docker-run-salt-master()][11] - Run salt-master service container
+- [docker-attach-salt-master()][11] - Attach to the salt-master daemon console
+- [docker-container-remove-all()][11] - Stop & remove all containers on localhost
 
 # Docker Registry
 
