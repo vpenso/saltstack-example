@@ -4,7 +4,6 @@ PROMETHEUS_NODE_EXPORTER_VERSION='v0.16.0'
 export PROMETHEUS_VERSION \
        PROMETHEUS_NODE_EXPORTER_VERSION
 
-echo 'prometheus-dockerhub-images-to-local-registry() -- Copy Prometheus container images to local registry'
 prometheus-dockerhub-images-to-local-registry() {
         
         echo Pull Prometheus container images from DockerHub
@@ -21,7 +20,6 @@ prometheus-dockerhub-images-to-local-registry() {
 
 }
 
-echo 'prometheus-docker-container() -- Run Prometheus service container'
 prometheus-docker-container() {
         echo Start prometheus container
         docker run --detach \
@@ -34,7 +32,6 @@ prometheus-docker-container() {
                             --storage.tsdb.path=/prometheus
 }
 
-echo 'prometheus-node-exporter-docker-container() -- Run Prometheus node-exporter container'
 prometheus-node-exporter-docker-container() {
         echo Start node-exporter container
         docker run --detach \

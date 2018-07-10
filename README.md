@@ -49,16 +49,18 @@ File                                    | Description
 [srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
 [srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
 
-Command to execute:
+Use following shell functions to install the Salt and Docker CE:
+
+- [salt-bootstrap-minion()][09] - Install salt-minion on localhost
+- [salt-call-local-state-docker()][01] - Install Docker CE on localhost using masterless Salt
 
 ```bash
-# bootstrap salt-minion on localhost
->>> salt-bootstrap-minion
-Add SaltStack repository to Yum in /etc/yum.repos.d/salt.repo
-Install salt-minion with Yum, cf. $SALT_DOCKER_LOGS/yum.log
-# use masterless Salt to install Docker
->>> salt-call-local-state-docker 
-Exec masterless Salt to install Docker CE, cf. $SALT_DOCKER_LOGS/salt.log
+vm ex lxcm01 -r '
+        # bootstrap salt-minion on localhost
+        salt-bootstrap-minion
+        # use masterless Salt to install Docker
+        salt-call-local-state-docker
+'
 ```
 
 ### Salt-Master Container 
@@ -70,6 +72,8 @@ File                                             | Description
 [var/aliases/docker.sh][11]                      | Shell functions for Docker
 [var/dockerfiles/salt-master/Dockerfile][10]     | Dockerfile for the Salt master
 [srv/salt/salt/master-docker-container.sls][12]  | Salt state file to build & run salt-master container
+
+- [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
 
 ```bash
 # exec masterless Salt to build and start the salt-master container
@@ -181,11 +185,14 @@ docker run --interactive \
                             --collector.filesystem.ignored-mount-points "^/(sys|proc|dev|host|etc)($|/)"
 ```
 
-Both commands are wrapped with the shell functions [prometheus-docker-container()][22] and [prometheus-node-exporter-docker-container()][22].
+Both commands are wrapped with the shell functions:
+
+- [prometheus-docker-container()][22] - Run Prometheus service container
+- [prometheus-node-exporter-docker-container()][22] - Run Prometheus service container
 
 ```bash
 # exec masterless Salt to run a Prometheus docker container
-vn ex lxcm01 -r salt-call-local-state prometheus/prometheus-docker-container
+salt-call-local-state prometheus/prometheus-docker-container
 # access Prometheus WUI from the VM host
 $BROWSER http://$(vm ip lxcm01):9090/targets
 ```

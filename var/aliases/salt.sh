@@ -3,13 +3,9 @@ SALT_STATE_TREE=$SALT_DOCKER_PATH/srv/salt
 
 export SALT_DOCKER_LOGS SALT_STATE_TREE
 
-echo SALT_DOCKER_LOGS=$SALT_DOCKER_LOGS
-echo SALT_STATE_TREE=$SALT_STATE_TREE
-
 # create the log directory if missing
 [[ -d $SALT_DOCKER_LOGS ]] || mkdir --parents $SALT_DOCKER_LOGS
 
-echo 'salt-bootstrap-minion() -- Install salt-minion on localhost'
 salt-bootstrap-minion() {
 
         # on Red Hat, CentOS
@@ -32,7 +28,6 @@ salt-bootstrap-minion() {
 
 }
 
-echo 'salt-call-local-state() -- Exec masterless Salt with given SLS'
 salt-call-local-state() {
 
         salt-call --local \
@@ -42,7 +37,6 @@ salt-call-local-state() {
 
 }
 
-echo 'salt-call-local-state-docker() -- Install Docker CE on localhost'
 salt-call-local-state-docker() {
 
         echo Exec masterless Salt to install Docker CE, cf. \$SALT_DOCKER_LOGS/salt.log
