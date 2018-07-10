@@ -208,10 +208,14 @@ File                                                        | Description
 ------------------------------------------------------------|-----------------------------------------
 [var/aliases/prometheus.sh][22]                             | Shell functions for Prometheus
 [srv/salt/prometheus/prometheus-docker-container.sls][23]   | Salt state to configure the Prometheus docker container
+[.../prometheus-node-exporter-docker-container.sls][27]     | Salt state configuration for the node exporter
 
 ```bash
-# exec masterless Salt to run a Prometheus docker container
-vm ex lxcm01 -r salt-call-local-state prometheus/prometheus-docker-container
+# exec masterless Salt to run a Prometheus and Node exporterdocker container
+vm ex lxcm01 -r '
+        salt-call-local-state prometheus/prometheus-docker-container
+        salt-call-local-state prometheus/prometheus-node-exporter-docker-container
+'
 # access Prometheus WUI from the VM host
 $BROWSER http://$(vm ip lxcm01):9090/targets
 ```
@@ -232,6 +236,25 @@ prometheus_docker_container:
     - restart_policy: always
     - watch:
       - file: /etc/prometheus/prometheus.yml
+```
+
+Salt configuration for the Node exporter (cf. [prometheus-node-exporter-docker-container.sls][27]):
+
+```sls
+prometheus_node_exporter_docker_container:
+  docker_container.running:
+    - name: prometheus-node-exporter
+    - image: {{salt['environ.get']('DOCKER_LOCAL_REGISTRY')}}/prometheus-node-exporter:{{salt['environ.get']('PROMETHEUS_NODE_EXPORTER_VERSION')}}
+    - cmd:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($|/)'
+    - port_bindings: 9100:9100
+    - restart_policy: always
+    - binds:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
 ```
 
 Alternatively login to the VM and run the containers using the Docker CLI:
@@ -293,3 +316,4 @@ Both commands are wrapped with the shell functions:
 [24]: https://github.com/prometheus/prometheus
 [25]: https://github.com/prometheus/node_exporter
 [26]: https://docs.docker.com/config/thirdparty/prometheus/
+[27]: srv/salt/prometheus/prometheus-node-exporter-docker-container.sls
