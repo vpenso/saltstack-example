@@ -216,7 +216,25 @@ vm ex lxcm01 -r salt-call-local-state prometheus/prometheus-docker-container
 $BROWSER http://$(vm ip lxcm01):9090/targets
 ```
 
-Run the containers using the Docker CLI:
+The Prometheus docker container is created by the following Salt configuration (cf. [prometheus-docker-container.sls][23]):
+
+```sls
+prometheus_docker_container:
+  file.managed:
+    - name: /etc/prometheus/prometheus.yml
+    - makedirs: True
+    - source: salt://prometheus/prometheus.yml
+  docker_container.running:
+    - name: prometheus
+    - image: {{salt['environ.get']('DOCKER_LOCAL_REGISTRY')}}/prometheus:{{salt['environ.get']('PROMETHEUS_VERSION')}}
+    - port_bindings: 9090:9090
+    - binds: /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    - restart_policy: always
+    - watch:
+      - file: /etc/prometheus/prometheus.yml
+```
+
+Alternatively login to the VM and run the containers using the Docker CLI:
 
 ```bash
 # start the Prometheus container from the private registry
