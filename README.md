@@ -341,16 +341,6 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 >>> vn ex -r 'docker swarm join --token SWMTKN-1-4w5prpcpmzrzbtxuxcpa3crw0ou98z8qhcjwl8fy77hjwhce4s-90l6oqk0j6e5s27lkzoh8dqz6 10.1.1.7:2377'
 ```
 
-Working with the swarm:
-
-```bash
-# view information about nodes
-docker node ls
-```
-
-
-
-
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"
 [02]: var/aliases/
