@@ -287,9 +287,23 @@ Both commands are wrapped with the shell functions:
 - [prometheus-docker-container()][22] - Run Prometheus service container
 - [prometheus-node-exporter-docker-container()][22] - Run Prometheus service container
 
+Cf. [Collect Docker metrics with Prometheus][26]
 
+# Docker Swarm
 
-[Collect Docker metrics with Prometheus][26]
+```bash
+export NODES=lxb00[1-3]
+# start additional nodes part or the Docker swarm cluster
+vn s centos7
+# add the SaltStack package repository
+vn sy -r $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo  :/etc/yum.repos.d/
+# install the SaltStack minions
+vn ex "
+        yum install -y salt-minion
+        echo master: $(vm ip lxcm01) > /etc/salt/minion
+        systemctl enable --now salt-minion && systemctl status salt-minion
+"
+```
 
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"
