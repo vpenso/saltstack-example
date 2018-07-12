@@ -308,11 +308,48 @@ vn s centos7
 vn sy -r $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo  :/etc/yum.repos.d/
 # install the SaltStack minions
 vn ex -r "
+        # disable the firewall
+        systemctl disable --now firewalld
         yum install -y salt-minion
+        # connte to the salt-master
         echo master: $(vm ip lxcm01) > /etc/salt/minion
         systemctl enable --now salt-minion && systemctl status salt-minion
 "
 ```
+
+Configure the nodes using the salt-master:
+
+```bash
+vm ex lxcm01 -r '
+        # accept all Salt minions
+        docker exec salt-master salt-key -A -y
+        docker exec salt-master salt -t 300 -E lxb state.apply
+`
+```
+
+[Create a swarm][30] running the Docker swarm manager on lxcm01 
+
+```bash
+>>> vm ex lxcm01 -r -- docker swarm init --advertise-addr $(vm ip lxcm01)
+Swarm initialized: current node (q0sa4fux8o79uy3bi2jd7wtsu) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-4w5prpcpmzrzbtxuxcpa3crw0ou98z8qhcjwl8fy77hjwhce4s-90l6oqk0j6e5s27lkzoh8dqz6 10.1.1.7:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+>>> vn ex -r 'docker swarm join --token SWMTKN-1-4w5prpcpmzrzbtxuxcpa3crw0ou98z8qhcjwl8fy77hjwhce4s-90l6oqk0j6e5s27lkzoh8dqz6 10.1.1.7:2377'
+```
+
+Working with the swarm:
+
+```bash
+# view information about nodes
+docker node ls
+```
+
+
+
 
 [00]: source_me.sh
 [01]: https://docs.docker.com/engine/reference/builder/ "Dockerfile reference"
@@ -342,4 +379,5 @@ vn ex -r "
 [26]: https://docs.docker.com/config/thirdparty/prometheus/
 [27]: srv/salt/prometheus/prometheus-node-exporter-docker-container.sls
 [28]: srv/salt/prometheus/prometheus.yml
-[20]: https://docs.docker.com/engine/swarm/ "Dcoker Swarm mode overview"
+[29]: https://docs.docker.com/engine/swarm/ "Docker Swarm mode overview"
+[30]: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ "Docker create s swarm"
