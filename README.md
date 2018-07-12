@@ -323,22 +323,22 @@ Configure the nodes using the salt-master:
 vm ex lxcm01 -r '
         # accept all Salt minions
         docker exec salt-master salt-key -A -y
-        docker exec salt-master salt -t 300 -E lxb state.apply
+        # install Docker CE on all nodes
+        docker exec salt-master salt -t 300 -E lxb state.apply docker/docker-ce
 `
 ```
 
-[Create a swarm][30] running the Docker swarm manager on lxcm01 
+Cf. [Run Docker Engine in swarm mode][30]:
 
 ```bash
->>> vm ex lxcm01 -r -- docker swarm init --advertise-addr $(vm ip lxcm01)
-Swarm initialized: current node (q0sa4fux8o79uy3bi2jd7wtsu) is now a manager.
-
-To add a worker to this swarm, run the following command:
-
-    docker swarm join --token SWMTKN-1-4w5prpcpmzrzbtxuxcpa3crw0ou98z8qhcjwl8fy77hjwhce4s-90l6oqk0j6e5s27lkzoh8dqz6 10.1.1.7:2377
-
-To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
->>> vn ex -r 'docker swarm join --token SWMTKN-1-4w5prpcpmzrzbtxuxcpa3crw0ou98z8qhcjwl8fy77hjwhce4s-90l6oqk0j6e5s27lkzoh8dqz6 10.1.1.7:2377'
+# create a Docker swarm manager
+vm ex lxcm01 -r -- docker swarm init --advertise-addr $(vm ip lxcm01)
+# export the join token to an environment variable
+export DOCKER_SWARM_WORKER_TOKEN=$(vm ex lxcm01 -r -- docker swarm join-token --quiet worker)
+# add nodes to the swarm
+vn ex -r -- docker swarm join --token $DOCKER_SWARM_WORKER_TOKEN $(vm ip lxcm01):2377
+# remove all nodes from the swarm
+vn ex -r docker swarm leave
 ```
 
 [00]: source_me.sh
@@ -370,4 +370,4 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 [27]: srv/salt/prometheus/prometheus-node-exporter-docker-container.sls
 [28]: srv/salt/prometheus/prometheus.yml
 [29]: https://docs.docker.com/engine/swarm/ "Docker Swarm mode overview"
-[30]: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ "Docker create s swarm"
+[30]: https://docs.docker.com/engine/swarm/swarm-mode/ "Run Docker Engine in swarm mode"
