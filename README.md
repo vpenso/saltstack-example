@@ -33,7 +33,7 @@ Bootstrap the VM to run a Salt master as a service in a Docker container.
 
 ### Salt-Minion & Docker CE
 
-Install Salt minion on local host, and run Salt [masterless][04] to install [Docker CE][05]:
+Install Salt minion on local host, and **run Salt [masterless][04] to install [Docker CE][05]**:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
@@ -85,7 +85,7 @@ docker_service:
 
 ### Salt-Master Container 
 
-Build and run the "salt-master" docker container:
+**Build and run the "salt-master"** docker container:
 
 File                                                  | Description
 ------------------------------------------------------|-----------------------------------------
@@ -162,9 +162,9 @@ File                                       | Description
 [srv/salt/docker/docker-daemon-insecure.json][21]   | Docker daemon configuration file
 
 
-Execute masterless Salt to pull and run a private docker registry. Configure the docker daemon on pull from [an insecure registry][17]:
+Execute **masterless Salt to pull and run a private docker registry**. Configure the docker daemon on pull from [an insecure registry][17]:
 
-* [prometheus-dockerhub-images-to-local-registry][22] - Copy the Prometheus and Node Exporter container images from DockerHub to the local registry
+* [prometheus-dockerhub-images-to-local-registry][22] - Copy the Prometheus and Node Exporter **container images from DockerHub to the local registry**
 * [docker-list-local-repository-catalog][11] - List container repositories on the local registry
 * [docker-list-local-repository-tags()][11] -  List tags for a given container repository on the local registry
 
