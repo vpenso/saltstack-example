@@ -291,6 +291,15 @@ Cf. [Collect Docker metrics with Prometheus][26]
 
 # Docker Swarm
 
+Deploy a [Docker Swarm Cluster][29] using following VMs: 
+
+Node           | Description
+---------------|------------------------------------
+lxcm01         | docker, docker-registry, salt-master, prometheus
+lxb00[1-3]     | docker (swarm nodes)
+
+Start additional VMs and bootstrap Salt:
+
 ```bash
 export NODES=lxb00[1-3]
 # start additional nodes part or the Docker swarm cluster
@@ -298,7 +307,7 @@ vn s centos7
 # add the SaltStack package repository
 vn sy -r $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo  :/etc/yum.repos.d/
 # install the SaltStack minions
-vn ex "
+vn ex -r "
         yum install -y salt-minion
         echo master: $(vm ip lxcm01) > /etc/salt/minion
         systemctl enable --now salt-minion && systemctl status salt-minion
@@ -323,7 +332,7 @@ vn ex "
 [15]: srv/salt/docker/registry-docker-container.sls
 [16]: https://github.com/vpenso/vm-tools
 [17]: https://docs.docker.com/registry/insecure/
-[18]: https://hub.docker.com/u/prom/
+[18]: https://hub.docker.com/u/prom/ "Prometheus on DockerHub"
 [20]: srv/salt/docker/docker-daemon-insecure.sls
 [21]: srv/salt/docker/docker-daemon-insecure.json
 [22]: var/aliases/prometheus.sh
@@ -333,3 +342,4 @@ vn ex "
 [26]: https://docs.docker.com/config/thirdparty/prometheus/
 [27]: srv/salt/prometheus/prometheus-node-exporter-docker-container.sls
 [28]: srv/salt/prometheus/prometheus.yml
+[20]: https://docs.docker.com/engine/swarm/ "Dcoker Swarm mode overview"
