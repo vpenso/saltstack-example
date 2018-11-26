@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+SALT_REPO=${SALT_REPO:-https://github.com/vpenso/saltstack-docker-example}
+
+# start a CentOS 7 virtual machine instance to host the salt master
+virsh-instance shadow --memory 4 centos7 $SALT_MASTER |:
+sleep 5
+
+cd $(virsh-instance path $SALT_MASTER)
+
+echo Basic configuration of ${SALT_MASTER}...
+ssh-instance --root "
+        hostname $SALT_MASTER
+	echo $SALT_MASTER > /etc/hostname
+        # diable the firewall
+        systemctl disable --now firewalld |:
+        # install Git
+        yum install -e 0 -qy git bash-completion
+"
+
+echo Clone $SALT_REPO
+ssh-instance --root "
+        # clone this repository
+        git clone $SALT_REPO
+        # load the repository environment on login
+        echo 'source \$HOME/saltstack-docker-example/source_me.sh' >> \$HOME/.bashrc
+"
+
+echo Boostrap the Salt master...
+ssh-instance --root "
+	salt-bootstrap-minion
+	salt-call-local-state-docker	
+	salt-call-local-state salt/salt-master-docker-container
+"
+
+cd - |:

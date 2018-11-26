@@ -23,3 +23,5 @@ for file in `\ls $SALT_DOCKER_PATH/var/aliases/*.sh`
 do 
   source $file
 done
+
+export PATH=$SALT_DOCKER_PATH/bin:$PATH
