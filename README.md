@@ -9,11 +9,13 @@ SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
 Prometheus | Time-series database          | <https://prometheus.io>
 
-Bootstrap the VM to run a **Salt master as a service in a Docker container**:
+Bootstrap a VM  instance and deploy a **Salt master service in a Docker container**:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
 [bin/salt-master-vm-instance][31]       | Boot a VM with a Salt master docker container, cf. [INSTALL.md](INSTALL.md)
+
+Login to the VM instance with `vm lo $SALT_MASTER -r`.
 
 # Docker Registry
 
@@ -211,6 +213,7 @@ vn ex -r docker swarm leave
 [03]: https://saltstack.com
 [04]: https://docs.saltstack.com/en/latest/topics/tutorials/quickstart.html
 [05]: https://docs.docker.com/install/
+[11]: var/aliases/docker.sh
 [13]: https://docs.saltstack.com/en/latest/ref/states/all/salt.states.docker.html
 [14]: https://docs.docker.com/registry/deploying/
 [15]: srv/salt/docker/registry-docker-container.sls

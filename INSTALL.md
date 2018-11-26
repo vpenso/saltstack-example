@@ -83,7 +83,7 @@ File                                                  | Description
 Execute masterless Salt to build and start the salt-master container on localhost:
 
 ```bash
-vm ex lxcm01 -r salt-call-local-state salt/salt-master-docker-container
+vm ex $SALT_MASTER -r salt-call-local-state salt/salt-master-docker-container
 ```
 
 Using following Salt configuration (cf. [salt-master-docker-container.sls][12]):
