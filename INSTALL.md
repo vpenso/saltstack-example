@@ -138,6 +138,8 @@ The commands above are wrapped by the follwoing shell functions:
 - [docker-container-remove-all()][11] - Stop & remove all containers on localhost
 
 
+[04]: https://docs.saltstack.com/en/latest/topics/tutorials/quickstart.html
+[05]: https://docs.docker.com/install/
 [06]: srv/salt/docker/docker-ce.sls
 [07]: srv/salt/docker/docker-ce.repo
 [08]: etc/yum.repos.d/salt.repo

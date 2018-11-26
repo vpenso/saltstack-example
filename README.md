@@ -13,9 +13,7 @@ Bootstrap the VM to run a **Salt master as a service in a Docker container**:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
-[bin/salt-master-vm-instance][31]       | Boot a VM with a Salt master docker container
-
-Execute `salt-master-vm-instance`, cf. [INSTALL.md](INSTALL.md)
+[bin/salt-master-vm-instance][31]       | Boot a VM with a Salt master docker container, cf. [INSTALL.md](INSTALL.md)
 
 # Docker Registry
 
