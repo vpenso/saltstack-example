@@ -1,9 +1,10 @@
+## Bootstrap
 
 Start from a basic CentOS 7 installation:
 
 1. Make sure that the **SaltStack [package repository][repo]** is in the Yum configuration.
 2. Enable the **EPEL Fedora community packages**
-3. Install the **Salt Minion** package, and a couple of other required tools
+3. Install the **Salt Minion** package, and a couple of other required tools (i.e. Git)
 
 ```bash
 cat > /etc/yum.repos.d/salt.repo <<EOF
@@ -29,11 +30,15 @@ Once the Salt minion is installed, use its masterless mode to prepare Docker:
 
 ```bash
 git clone https://github.com/vpenso/saltstack-docker-example
-echo "source $(realpath $PWD)/saltstack-docker-example/source_me.sh" >> $HOME/.bashrc && source $HOME/.bashrc
+# append the repository environment othe the shell user-configuration
+echo "source $(realpath $PWD)/saltstack-docker-example/source_me.sh" >> ~/.bashrc && source ~/.bashrc
+# run salt masterless to install Docker
 salt-call --local --file-root $SALT_STATE_TREE state.sls docker/docker-ce
+# check the Docker installation
+docker info
 ```
 
-Docker CE is installed with following Salt configuration (cf. [docker-ce.sls][../srv/salt/docker/docker-ce.sls]):
+Docker CE is installed with following Salt configuration, cf. [docker-ce.sls](../srv/salt/docker/docker-ce.sls):
 
 ```sls
 # add the official Docker package repositories to Yum
@@ -59,3 +64,5 @@ docker_service:
     - name: docker.service
     - enable: True
 ```
+
+Now proceed by building a docker container for the Salt master.
