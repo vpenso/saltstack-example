@@ -11,7 +11,7 @@ cd $(virsh-instance path $SALT_MASTER)
 echo Basic configuration of ${SALT_MASTER}...
 ssh-instance --root "
         hostname $SALT_MASTER
-	echo $SALT_MASTER > /etc/hostname
+        echo $SALT_MASTER > /etc/hostname
         # diable the firewall
         systemctl disable --now firewalld |:
         # install Git
@@ -28,9 +28,9 @@ ssh-instance --root "
 
 echo Boostrap the Salt master...
 ssh-instance --root "
-	salt-bootstrap-minion
-	salt-call-local-state-docker	
-	salt-call-local-state salt/salt-master-docker-container
+        salt-bootstrap-minion
+        salt-call-local-state-docker	
+        salt-call-local-state salt/salt-master-docker-container
 "
 
 cd - |:

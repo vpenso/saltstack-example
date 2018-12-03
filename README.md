@@ -1,5 +1,3 @@
-# SaltStack with Docker
-
 List of components used in this project:
 
 Component  | Description                   | Cf.
@@ -9,7 +7,9 @@ SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
 Prometheus | Time-series database          | <https://prometheus.io>
 
-Bootstrap a VM  instance and deploy a **Salt master service in a Docker container**:
+# SaltStack with Docker
+
+Bootstrap a VM instance and deploy a **Salt master as Docker container**:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------

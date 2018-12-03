@@ -34,7 +34,7 @@ vm ex lxcm01 -r '
         docker exec salt-master salt-key -A -y
         # install Docker CE on all nodes
         docker exec salt-master salt -t 300 -E lxb state.apply docker/docker-ce
-`
+'
 ```
 
 Cf. [Run Docker Engine in swarm mode][30]:
