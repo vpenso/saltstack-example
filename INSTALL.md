@@ -17,7 +17,7 @@ vm ex $SALT_MASTER -r '
 '
 ```
 
-### Salt-Minion & Docker CE
+### Boostrap
 
 Install Salt minion on the host, and **run Salt [masterless][04] to install [Docker CE][05]**:
 
@@ -40,33 +40,6 @@ vm ex $SALT_MASTER -r '
         salt-bootstrap-minion
         salt-call-local-state-docker
 '
-```
-
-Docker CE is installed with following Salt configuration (cf [docker-ce.sls][06]):
-
-```sls
-# add the official Docker package repositories to Yum
-docker_ce_package_repo:
-  file.managed:
-    - name: /etc/yum.repos.d/docker-ce.repo
-    - source: salt://docker/docker-ce.repo
-
-# install the Docker CE packages including dependecies
-docker_ce_packages:
-  pkg.latest:
-    - refresh: True
-    - pkgs:
-      - yum-utils
-      - device-mapper-persistent-data
-      - lvm2
-      - docker-ce
-      - docker-python
-
-# make sure docker daemon is present
-docker_service:
-  service.running:
-    - name: docker.service
-    - enable: True
 ```
 
 ### Salt-Master Container 
