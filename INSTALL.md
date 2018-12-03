@@ -19,7 +19,7 @@ vm ex $SALT_MASTER -r '
 
 ### Salt-Minion & Docker CE
 
-Install Salt minion on local host, and **run Salt [masterless][04] to install [Docker CE][05]**:
+Install Salt minion on the host, and **run Salt [masterless][04] to install [Docker CE][05]**:
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
@@ -28,7 +28,7 @@ File                                    | Description
 [srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
 [srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
 
-Use following shell functions to install Salt and Docker CE:
+Use following shell functions to install Salt and Docker CE, cf. [docs/bootstrap.md](docs/bootstrap.md):
 
 - [salt-bootstrap-minion()][09] - Install the salt-minion package on localhost
 - [salt-call-local-state-docker()][09] - Install Docker CE on localhost using masterless Salt
