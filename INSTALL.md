@@ -1,35 +1,6 @@
 ## SaltStack Master Deployment
 
-This example uses a virtual machine setup with [vm-tools][16]:
-
-```bash
-# start a CentOS 7 VM instance and apply a basic configuration
-vm s centos7 $SALT_MASTER
-vm ex $SALT_MASTER -r "
-        # diable the firewall
-        systemctl disable --now firewalld
-        # install Git
-        yum install -y git bash-completion
-"
-```
-
-### Boostrap
-
 Install Salt minion on the host, and **run Salt [masterless][04] to install [Docker CE][05]**:
-
-```bash
-# bootstrap Salt and Docker on localhost 
-vm ex $SALT_MASTER -r "
-        # clone this repository
-        git clone $SALT_REPO /opt
-        # load the repository environment on login
-        echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc
-        # install salt minion
-        salt-bootstrap-minion
-        # install docker
-        salt-call-local-state-docker
-"
-```
 
 Use following shell functions to install Salt and Docker CE, cf. [docs/bootstrap.md](docs/bootstrap.md):
 

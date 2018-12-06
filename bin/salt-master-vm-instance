@@ -16,19 +16,15 @@ ssh-instance --root "
         yum install -e 0 -qy git bash-completion
 "
 
-echo Clone $SALT_REPO
-ssh-instance --root "
-        # clone this repository
-        git clone $SALT_REPO
-        # load the repository environment on login
-        echo 'source \$HOME/saltstack-docker-example/source_me.sh' >> \$HOME/.bashrc
-"
+echo Sync repository to $SALT_MASTER
+rsync-instance --root $SALT_EXAMPLE_PATH :/opt
+ssh-instance --root "echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc"
 
 echo Boostrap the Salt master...
-ssh-instance --root "
-        salt-bootstrap-minion
-        salt-call-local-state-docker	
-        salt-call-local-state salt/salt-master-docker-container
-"
+ssh-instance --root '
+        cp -v $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo /etc/yum.repos.d/
+        yum install --assumeyes epel-release
+        yum install --assumeyes salt-minion git bash-completion jq
+'
 
 cd - |:

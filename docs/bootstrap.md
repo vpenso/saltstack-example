@@ -1,3 +1,18 @@
+This example uses a virtual machine setup with [vm-tools][00]:
+
+```bash
+# start a CentOS 7 VM instance and apply a basic configuration
+vm s centos7 $SALT_MASTER
+vm ex $SALT_MASTER -r "
+        # diable the firewall
+        systemctl disable --now firewalld
+        # install Git
+        yum install -y git bash-completion
+"
+```
+
+[00]: https://github.com/vpenso/vm-tools
+
 ### Bootstrap Salt Minion
 
 Start from a basic CentOS 7 installation:
@@ -19,6 +34,8 @@ vm ex $SALT_MASTER -r '
 
 [repo]: https://docs.saltstack.com/en/latest/topics/installation/rhel.html
 
+[bin/salt-master-vm-instance][02] automates the steps above.
+
 ### Salt Masterless Mode
 
 Once the minion is installed, use masterless mode to configure other components:
@@ -31,8 +48,9 @@ salt-call --local --file-root $SALT_STATE_TREE state.sls <file>
 
 ```bash
 # i.e. install Docker Community Edition
-salt-local docker/docker-ce
+vm ex $SALT_MASTER -r salt-local docker/docker-ce
 ```
 
 [01]: ../var/aliases/salt.sh
+[02]: ../bin/salt-master-vm-instance
 
