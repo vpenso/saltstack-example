@@ -17,22 +17,9 @@ vm ex $SALT_MASTER -r "
 
 Install Salt minion on the host, and **run Salt [masterless][04] to install [Docker CE][05]**:
 
-File                                    | Description
-----------------------------------------|-----------------------------------------
-[etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
-[var/aliases/salt.sh][09]               | Shell functions for SaltStack
-[srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
-[srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
-
-Use following shell functions to install Salt and Docker CE, cf. [docs/bootstrap.md](docs/bootstrap.md):
-
-- [salt-bootstrap-minion()][09] - Install the salt-minion package on localhost
-- [salt-call-local-state-docker()][09] - Install Docker CE on localhost using masterless Salt
-- [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
-
 ```bash
 # bootstrap Salt and Docker on localhost 
-vm ex $SALT_MASTER -r '
+vm ex $SALT_MASTER -r "
         # clone this repository
         git clone $SALT_REPO
         # load the repository environment on login
@@ -41,8 +28,23 @@ vm ex $SALT_MASTER -r '
         salt-bootstrap-minion
         # install docker
         salt-call-local-state-docker
-'
+"
 ```
+
+Use following shell functions to install Salt and Docker CE, cf. [docs/bootstrap.md](docs/bootstrap.md):
+
+- [salt-bootstrap-minion()][09] - Install the salt-minion package on localhost
+- [salt-call-local-state-docker()][09] - Install Docker CE on localhost using masterless Salt
+- [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
+
+File                                    | Description
+----------------------------------------|-----------------------------------------
+[etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
+[var/aliases/salt.sh][09]               | Shell functions for SaltStack
+[srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
+[srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
+
+
 
 ### Salt-Master Container 
 
