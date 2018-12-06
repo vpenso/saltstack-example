@@ -14,14 +14,14 @@ do
 done
 __dir="$( cd -P "$( dirname "$__source" )" && pwd )"
 
-export SALT_DOCKER_PATH=$__dir
+export SALT_EXAMPLE_PATH=$__dir
 
 unset __dir
 unset __source
 
-for file in `\ls $SALT_DOCKER_PATH/var/aliases/*.sh`
+for file in `\ls $SALT_EXAMPLE_PATH/var/aliases/*.sh`
 do 
   source $file
 done
 
-export PATH=$SALT_DOCKER_PATH/bin:$PATH
+export PATH=$SALT_EXAMPLE_PATH/bin:$PATH

@@ -1,6 +1,6 @@
 SALT_MASTER=${SALT_MASTER:-lxcm01}
-SALT_DOCKER_LOGS=$SALT_DOCKER_PATH/var/log
-SALT_STATE_TREE=$SALT_DOCKER_PATH/srv/salt
+SALT_DOCKER_LOGS=$SALT_EXAMPLE_PATH/var/log
+SALT_STATE_TREE=$SALT_EXAMPLE_PATH/srv/salt
 
 export SALT_MASTER SALT_DOCKER_LOGS SALT_STATE_TREE
 
@@ -14,7 +14,7 @@ salt-bootstrap-minion() {
         then
 
                 echo Add SaltStack repository to Yum in /etc/yum.repos.d/salt.repo
-                cp $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo \
+                cp $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo \
                    /etc/yum.repos.d/
 
                 # enable the EPEL repository

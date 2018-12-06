@@ -65,7 +65,7 @@ Using following Salt configuration (cf. [salt-master-docker-container.sls][12]):
 docker_build_salt_master:
   docker_image.present:
     - name: salt-master
-    - build: {{ salt['environ.get']('SALT_DOCKER_PATH') }}/var/dockerfiles/salt-master
+    - build: {{ salt['environ.get']('SALT_EXAMPLE_PATH') }}/var/dockerfiles/salt-master
     - tag: latest
 
 docker_run_salt_master:
@@ -84,7 +84,7 @@ Alternatively login to the VM to build and run the salt-master container using t
 
 ```bash
 # build a new salt-master container
->>> docker build -t salt-master $SALT_DOCKER_PATH/var/dockerfiles/salt-master/
+>>> docker build -t salt-master $SALT_EXAMPLE_PATH/var/dockerfiles/salt-master/
 >>> docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 salt-master         latest              af328deacce0        50 seconds ago      482MB

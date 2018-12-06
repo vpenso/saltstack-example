@@ -14,7 +14,7 @@ export NODES=lxb00[1-3]
 # start additional nodes part or the Docker swarm cluster
 vn s centos7
 # add the SaltStack package repository
-vn sy -r $SALT_DOCKER_PATH/etc/yum.repos.d/salt.repo  :/etc/yum.repos.d/
+vn sy -r $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo  :/etc/yum.repos.d/
 # install the SaltStack minions
 vn ex -r "
         # disable the firewall

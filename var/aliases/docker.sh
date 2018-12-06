@@ -16,7 +16,7 @@ docker-list-local-repository-tags() {
 
 docker-build-salt-master() {
 
-        docker build -t salt-master $SALT_DOCKER_PATH/var/dockerfiles/salt-master/
+        docker build -t salt-master $SALT_EXAMPLE_PATH/var/dockerfiles/salt-master/
 
 }
 
