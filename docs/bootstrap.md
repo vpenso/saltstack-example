@@ -8,13 +8,13 @@ Start from a basic CentOS 7 installation:
 4. Sync this repository into the VM instance 
 
 ```bash
-vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo :/etc/yum.repso.d/
+vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH :/opt
+vm ex $SALT_MASTER -r "echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc"
 vm ex $SALT_MASTER -r '
+        cp $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo /etc/yum.repos.d/
         yum install --assumeyes epel-release
         yum install --assumeyes salt-minion git bash-completion jq
 '
-vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH :/opt
-vm ex $SALT_MASTER -r "echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc"
 ```
 
 [repo]: https://docs.saltstack.com/en/latest/topics/installation/rhel.html
