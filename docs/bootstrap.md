@@ -29,9 +29,19 @@ Once the Salt minion is installed, use its masterless mode to prepare Docker:
 3. **Install Docker** on the host with `salt-call --local` (masterless) and an SLS from the repository.
 
 ```bash
-git clone https://github.com/vpenso/saltstack-docker-example
+git clone https://github.com/vpenso/saltstack-example.git
 # append the repository environment othe the shell user-configuration
-echo "source $(realpath $PWD)/saltstack-docker-example/source_me.sh" >> ~/.bashrc && source ~/.bashrc
+echo "source $(realpath $PWD)/saltstack-example/source_me.sh" >> ~/.bashrc && source ~/.bashrc
+```
+
+```bash
+vm sy $SALT_MASTER $SALT_EXAMPLE_PATH :
+```
+
+
+
+
+```bash
 # run salt masterless to install Docker
 salt-call --local --file-root $SALT_STATE_TREE state.sls docker/docker-ce
 # check the Docker installation

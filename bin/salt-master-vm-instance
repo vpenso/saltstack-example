@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-SALT_REPO=${SALT_REPO:-https://github.com/vpenso/saltstack-docker-example}
-
 # start a CentOS 7 virtual machine instance to host the salt master
 virsh-instance shadow --memory 4 centos7 $SALT_MASTER |:
 sleep 5
