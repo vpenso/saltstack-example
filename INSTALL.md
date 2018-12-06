@@ -21,9 +21,9 @@ Install Salt minion on the host, and **run Salt [masterless][04] to install [Doc
 # bootstrap Salt and Docker on localhost 
 vm ex $SALT_MASTER -r "
         # clone this repository
-        git clone $SALT_REPO
+        git clone $SALT_REPO /opt
         # load the repository environment on login
-        echo 'source ~/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc
+        echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc
         # install salt minion
         salt-bootstrap-minion
         # install docker
