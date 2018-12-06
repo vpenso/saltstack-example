@@ -30,7 +30,7 @@ salt-bootstrap-minion() {
 
 }
 
-salt-call-local-state() {
+salt-local() {
 
         salt-call --local \
                   --file-root $SALT_STATE_TREE \
@@ -41,8 +41,7 @@ salt-call-local-state() {
 
 salt-call-local-state-docker() {
 
-        echo Exec masterless Salt to install Docker CE, cf. \$SALT_DOCKER_LOGS/salt.log
-        salt-call-local-state docker/docker-ce \
-                  &>> $SALT_DOCKER_LOGS/salt.log
+        echo Exec masterless Salt to install Docker CE
+        salt-local docker/docker-ce
 
 }

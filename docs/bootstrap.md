@@ -19,45 +19,19 @@ vm ex $SALT_MASTER -r '
 
 [repo]: https://docs.saltstack.com/en/latest/topics/installation/rhel.html
 
-Once the Salt minion is installed, use its masterless mode to prepare Docker:
-
-1. **Clone this Git repository** to make the required Salt configuration available on the host
-2. Add the cloned repository to the shell environment. It defines among others the `SALT_STATE_TREE` environment variable.
-3. **Install Docker** on the host with `salt-call --local` (masterless) and an SLS from the repository.
-
+Once the minion is installed, use **Salt masterless mode** to configure other components:
 
 ```bash
-# run salt masterless to install Docker
-salt-call --local --file-root $SALT_STATE_TREE state.sls docker/docker-ce
-# check the Docker installation
-docker info
+salt-call --local --file-root $SALT_STATE_TREE state.sls <file>
 ```
 
-Docker CE is installed with following Salt configuration, cf. [docker-ce.sls](../srv/salt/docker/docker-ce.sls):
+[var/aliases/salt.sh][01] defines a shell function `salt-local` abbreviating the command above.
 
-```sls
-# add the official Docker package repositories to Yum
-docker_ce_package_repo:
-  file.managed:
-    - name: /etc/yum.repos.d/docker-ce.repo
-    - source: salt://docker/docker-ce.repo
-
-# install the Docker CE packages including dependecies
-docker_ce_packages:
-  pkg.latest:
-    - refresh: True
-    - pkgs:
-      - yum-utils
-      - device-mapper-persistent-data
-      - lvm2
-      - docker-ce
-      - docker-python
-
-# make sure docker daemon is present
-docker_service:
-  service.running:
-    - name: docker.service
-    - enable: True
+```bash
+# install Docker Community Edition
+salt-local docker/docker-ce
 ```
 
-Now proceed by building a docker container for the Salt master.
+
+[01]: ../var/aliases/salt.sh
+
