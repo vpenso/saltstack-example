@@ -1,12 +1,9 @@
 ## SaltStack Master Deployment
 
-Install Salt minion on the host, and **run Salt [masterless][04] to install [Docker CE][05]**:
+Install Salt minion on the host cf [docs/bootstrap.md](docs/bootstrap.md) 
+to prepare Salt **[masterless mode][04]**.
 
-Use following shell functions to install Salt and Docker CE, cf. [docs/bootstrap.md](docs/bootstrap.md):
-
-- [salt-bootstrap-minion()][09] - Install the salt-minion package on localhost
-- [salt-call-local-state-docker()][09] - Install Docker CE on localhost using masterless Salt
-- [salt-call-local-state()][09] - Exec masterless Salt with given Salt state file
+Use following shell functions to install Salt and Docker CE, cf. 
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
