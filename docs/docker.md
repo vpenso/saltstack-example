@@ -1,17 +1,21 @@
-# Docker
+[Bootstrap](bootstrap.md) the salt minion for masterless mode beforehand.
 
-Once the Salt minion is installed, use its masterless mode to prepare Docker.
-**Install Docker** on the host with `salt-call --local` (masterless) and an 
-SLS from the repository:
+### Docker Runtime
+
+Manuall installation of the Docker runtime:
 
 ```bash
-# run salt masterless to install Docker
-salt-call --local --file-root $SALT_STATE_TREE state.sls docker/docker-ce
-# check the Docker installation
-docker info
+vm ex $SALT_MASTER -r '
+        # install the Yum repo configuration
+        cp $SALT_EXAMPLE_PATH/srv/salt/docker/docker-ce.repo /etc/yum.repos.d/
+        # install packages
+        yum install -y yum-utils device-mapper-persistent-data lvm2 docker-ce docker-python
+        # start Docker
+        systemctl enable --now docker && docker info
+'
 ```
 
-Docker CE is installed with following Salt configuration, cf. [docker-ce.sls](../srv/salt/docker/docker-ce.sls):
+The following Salt configuration (cf. [docker-ce.sls](../srv/salt/docker/docker-ce.sls)) replicates the steps above:
 
 ```sls
 # add the official Docker package repositories to Yum
@@ -38,4 +42,12 @@ docker_service:
     - enable: True
 ```
 
-Now proceed by building a docker container for the Salt master.
+Instead of a manual configuration use Salt masterless mode:
+
+```bash
+# run salt masterless to install Docker
+salt-call --local --file-root $SALT_STATE_TREE state.sls docker/docker-ce
+# check the Docker installation
+docker info
+```
+
