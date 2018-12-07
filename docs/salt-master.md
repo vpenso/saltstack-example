@@ -10,11 +10,11 @@ Create/configure the salt-master VM instance
 # create the Salt master VM instance
 salt-vm-instance $SALT_MASTER
 # install the Salt master
-vm ex $SALT_MASTER -r "
+vm ex $SALT_MASTER -r '
         yum install -y salt-master
         cp $SALT_EXAMPLE_PATH/etc/salt/master /etc/salt
         systemctl enable --now salt-master
-"
+'
 ```
 
 Alternatively: [docs/docker_salt-master.md][dsm] deploys a Salt master in a Docker container
