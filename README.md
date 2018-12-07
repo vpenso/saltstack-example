@@ -20,7 +20,7 @@ Login to the VM instance with `vm lo $SALT_MASTER -r`.
 
 Proceed by installing more services:
 
-* [docs/docker_salt-master.md](docker_salt-master.md) - Salt-master in a Docker container
+* [docs/docker_salt-master.md](docs/docker_salt-master.md) - Salt-master in a Docker container
 * [docs/prometheus.md](docs/prometheus.md)
 * [docs/docker_registry.md](docs/docker_registry.md)
 * [docs/docker_swarm.md](docs/docker_swarm.md)

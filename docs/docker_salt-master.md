@@ -1,6 +1,28 @@
-## SaltStack Master Deployment
 
-### Salt-Master Container 
+## Salt-Master Container 
+
+Login to the VM, and build/run the salt-master container using the Docker CLI:
+
+```bash
+# build a new salt-master container
+>>> docker build -t salt-master $SALT_EXAMPLE_PATH/var/dockerfiles/salt-master/
+>>> docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+salt-master         latest              af328deacce0        50 seconds ago      482MB
+centos              latest              49f7960eb7e4        4 weeks ago         200MB
+# start the salt-master service as docker container
+>>> docker run --detach \
+               --name salt-master \
+               --publish 4505:4505 \
+               --publish 4506:4506 \
+               --volume $SALT_STATE_TREE/:/srv/salt \
+           salt-master
+>>> docker ps
+# check the service log
+>>> docker exec salt-master cat /var/log/salt/master
+# inspect the salt-master container
+>>> docker container inspect salt-master
+```
 
 **Build and run the "salt-master"** docker container:
 
@@ -38,28 +60,6 @@ docker_run_salt_master:
       - {{ salt['environ.get']('SALT_STATE_TREE') }}:/srv/salt:ro
 ```
 
-Alternatively login to the VM to build and run the salt-master container using the Docker CLI:
-
-```bash
-# build a new salt-master container
->>> docker build -t salt-master $SALT_EXAMPLE_PATH/var/dockerfiles/salt-master/
->>> docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-salt-master         latest              af328deacce0        50 seconds ago      482MB
-centos              latest              49f7960eb7e4        4 weeks ago         200MB
-# start the salt-master service as docker container
->>> docker run --detach \
-               --name salt-master \
-               --publish 4505:4505 \
-               --publish 4506:4506 \
-               --volume $SALT_STATE_TREE/:/srv/salt \
-           salt-master
->>> docker ps
-# check the service log
->>> docker exec salt-master cat /var/log/salt/master
-# inspect the salt-master container
->>> docker container inspect salt-master
-```
 
 The commands above are wrapped by the follwoing shell functions:
 
