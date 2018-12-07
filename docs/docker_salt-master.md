@@ -36,30 +36,8 @@ File                                                  | Description
 Execute masterless Salt to build and start the salt-master container on localhost:
 
 ```bash
-vm ex $SALT_MASTER -r salt-call-local-state salt/salt-master-docker-container
+vm ex $SALT_MASTER -r salt-local salt/salt-master-docker-container
 ```
-
-Using following Salt configuration (cf. [salt-master-docker-container.sls][12]):
-
-```sls
-docker_build_salt_master:
-  docker_image.present:
-    - name: salt-master
-    - build: {{ salt['environ.get']('SALT_EXAMPLE_PATH') }}/var/dockerfiles/salt-master
-    - tag: latest
-
-docker_run_salt_master:
-  docker_container.running:
-    - name: salt-master
-    - image: salt-master:latest
-    - restart_policy: always
-    - port_bindings:
-      - 4505:4505
-      - 4506:4506
-    - binds:
-      - {{ salt['environ.get']('SALT_STATE_TREE') }}:/srv/salt:ro
-```
-
 
 The commands above are wrapped by the follwoing shell functions:
 
@@ -68,14 +46,7 @@ The commands above are wrapped by the follwoing shell functions:
 - [docker-attach-salt-master()][11] - Attach to the salt-master daemon console
 - [docker-container-remove-all()][11] - Stop & remove all containers on localhost
 
-
-[04]: https://docs.saltstack.com/en/latest/topics/tutorials/quickstart.html
-[05]: https://docs.docker.com/install/
-[06]: srv/salt/docker/docker-ce.sls
-[07]: srv/salt/docker/docker-ce.repo
-[08]: etc/yum.repos.d/salt.repo
-[09]: var/aliases/salt.sh
-[10]: var/dockerfiles/salt-master
-[11]: var/aliases/docker.sh
-[12]: srv/salt/salt/salt-master-docker-container.sls
-[16]: https://github.com/vpenso/vm-tools
+[09]: ../var/aliases/salt.sh
+[10]: ../var/dockerfiles/salt-master/Dockerfile
+[11]: ../var/aliases/docker.sh
+[12]: ../srv/salt/salt/salt-master-docker-container.sls
