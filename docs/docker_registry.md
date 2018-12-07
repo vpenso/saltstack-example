@@ -17,11 +17,11 @@ Execute **masterless Salt to pull and run a private docker registry**. Configure
 * [docker-list-local-repository-tags()][11] -  List tags for a given container repository on the local registry
 
 ```bash
-vm ex lxcm01 -r '
+vm ex $SALT_MASTER -r '
         # exec masterless Salt to pull and run the Docker private registry container
-        salt-call-local-state docker/registry-docker-container
+        salt-local docker/registry-docker-container
         # allow docker daemon insecure acccess to the local registry
-        salt-call-local-state docker/docker-daemon-insecure
+        salt-local docker/docker-daemon-insecure
         # pull, tag, and push prometheus and node-exporter container images
         prometheus-dockerhub-images-to-local-registry
         # list repos in local registry

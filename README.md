@@ -19,11 +19,10 @@ vm lo $SALT_MASTER -r
 vm ex $SALT_MASTER -r salt-local docker/docker-ce
 ```
 
-[docs/docker.md](docs/docker.md) describes to deployment of the docker runtime on the master.
-
 Proceed by installing more services:
 
+* [docs/docker.md](docs/docker.md) - Install the Docker runtime
 * [docs/docker_salt-master.md](docs/docker_salt-master.md) - Salt-master in a Docker container
-* [docs/prometheus.md](docs/prometheus.md)
-* [docs/docker_registry.md](docs/docker_registry.md)
-* [docs/docker_swarm.md](docs/docker_swarm.md)
+* [docs/docker_prometheus.md](docs/dicker_prometheus.md) - Prometheus server in a Docker container
+* [docs/docker_registry.md](docs/docker_registry.md) - Docker Registry in a Docker container
+* [docs/docker_swarm.md](docs/docker_swarm.md) - Docker Swarm cluster

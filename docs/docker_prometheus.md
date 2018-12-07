@@ -16,8 +16,8 @@ File                                                        | Description
 ```bash
 # exec masterless Salt to run a Prometheus and Node exporterdocker container
 vm ex $SALT_MASTER -r '
-        salt-call-local-state prometheus/prometheus-docker-container
-        salt-call-local-state prometheus/prometheus-node-exporter-docker-container
+        salt-local prometheus/prometheus-docker-container
+        salt-local prometheus/prometheus-node-exporter-docker-container
 '
 # access Prometheus WUI from the VM host
 $BROWSER http://$(vm ip lxcm01):9090/targets
