@@ -6,6 +6,12 @@ CentOS 7   | Operating system              | <https://centos.org>
 SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
 
+The shell script ↴ [source_me.sh][source_me.sh] adds the tool-chain in this repository to your shell environment:
+
+```
+source source_me.sh
+```
+
 # SaltStack
 
 Bootstrap a VM instance and deploy **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
@@ -13,8 +19,8 @@ Bootstrap a VM instance and deploy **Salt** (cf. [docs/bootstrap.md](docs/bootst
 ```bash
 # create a VM instance with salt-minion installed
 salt-vm-instance $instance
-# Login to the Salt master
-vm lo $instance -r
+# Login to the VM instance and check the version
+vm ex $instance -r -- salt-minion --version
 ```
 
 Create/configure the **`salt-master` VM instance**
