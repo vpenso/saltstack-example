@@ -15,9 +15,10 @@ vm ex $SALT_MASTER -r '
 '
 ```
 
-[srv/salt/docker/docker-ce.sls](../srv/salt/docker/docker-ce.sls) state-file 
-runs the commands above.Login to the VM an install Docker using Salt 
-masterless mode:
+File                                    | Description
+----------------------------------------|-----------------------------------------
+[srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
+[srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
 
 ```bash
 # run salt masterless to install Docker
@@ -35,3 +36,5 @@ vm ex $SALT_MASTER -r '
 '
 ```
 
+[06]: srv/salt/docker/docker-ce.sls
+[07]: srv/salt/docker/docker-ce.repo

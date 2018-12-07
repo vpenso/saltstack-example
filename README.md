@@ -26,3 +26,5 @@ Proceed by installing more services:
 * [docs/docker_swarm.md](docs/docker_swarm.md)
 
 [01]: bin/salt-master-vm-instance
+[08]: etc/yum.repos.d/salt.repo
+[09]: var/aliases/salt.sh

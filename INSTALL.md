@@ -1,19 +1,5 @@
 ## SaltStack Master Deployment
 
-Install Salt minion on the host cf [docs/bootstrap.md](docs/bootstrap.md) 
-to prepare Salt **[masterless mode][04]**.
-
-Use following shell functions to install Salt and Docker CE, cf. 
-
-File                                    | Description
-----------------------------------------|-----------------------------------------
-[etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
-[var/aliases/salt.sh][09]               | Shell functions for SaltStack
-[srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
-[srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
-
-
-
 ### Salt-Master Container 
 
 **Build and run the "salt-master"** docker container:
