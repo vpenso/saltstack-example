@@ -16,7 +16,16 @@ File                                    | Description
 [etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
 [var/aliases/salt.sh][09]               | Shell functions for Salt
 
-Login to the VM instance with `vm lo $SALT_MASTER -r`.
+```bash
+# create the Salt master VM instance
+salt-master-vm-instance
+# Login to the Salt master
+vm lo $SALT_MASTER -r
+# deploy Docker CE on the master
+vm ex $SALT_MASTER -r salt-local docker/docker-ce
+```
+
+[docs/docker.md](docs/docker.md) describes to deployment of the docker runtime on the master.
 
 Proceed by installing more services:
 
