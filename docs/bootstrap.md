@@ -38,7 +38,9 @@ vm ex $SALT_MASTER -r '
 
 ### Salt Masterless Mode
 
-Once the minion is installed, use masterless mode to configure other components:
+Once the minion is installed, use [masterless mode][mm] to configure other components:
+
+[mm]: https://docs.saltstack.com/en/latest/topics/tutorials/quickstart.html
 
 ```bash
 salt-call --local --file-root $SALT_STATE_TREE state.sls <file>

@@ -9,11 +9,13 @@ Prometheus | Time-series database          | <https://prometheus.io>
 
 # SaltStack with Docker
 
-Bootstrap a VM instance and deploy a **Salt master as Docker container**:
+Bootstrap a VM instance and deploy a **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
-[bin/salt-master-vm-instance][01]       | Boot a VM with a Salt master docker container, cf. [INSTALL.md](INSTALL.md)
+[bin/salt-master-vm-instance][01]       | Create VM `$SALT_MASTER` and install the Salt minion
+[etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
+[var/aliases/salt.sh][09]               | Shell functions for Salt
 
 Login to the VM instance with `vm lo $SALT_MASTER -r`.
 
