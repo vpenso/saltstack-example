@@ -13,7 +13,6 @@ docker_ce_packages:
       - device-mapper-persistent-data
       - lvm2
       - docker-ce
-      - docker-python
 
 # make sure docker daemon is present
 docker_service:

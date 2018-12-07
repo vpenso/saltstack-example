@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # start a CentOS 7 virtual machine instance to host the salt master
-virsh-instance shadow --memory 4 centos7 $SALT_MASTER |:
-sleep 5
+virsh-instance shadow --memory 4 centos7 $SALT_MASTER
+sleep 15 # wait for the boot
 
 cd $(virsh-instance path $SALT_MASTER)
 
@@ -10,9 +10,7 @@ echo Basic configuration of ${SALT_MASTER}...
 ssh-instance --root "
         hostname $SALT_MASTER
         echo $SALT_MASTER > /etc/hostname
-        # diable the firewall
         systemctl disable --now firewalld |:
-        # install Git
         yum install -e 0 -qy git bash-completion
 "
 
