@@ -6,7 +6,7 @@ CentOS 7   | Operating system              | <https://centos.org>
 SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
 
-The shell script ↴ [source_me.sh][source_me.sh] adds the tool-chain in this repository to your shell environment:
+The shell script ↴ [source_me.sh](source_me.sh) adds the tool-chain in this repository to your shell environment:
 
 ```
 source source_me.sh
