@@ -1,3 +1,13 @@
+
+File                                    | Description
+----------------------------------------|-----------------------------------------
+[bin/salt-master-vm-instance][02]       | Create VM `$SALT_MASTER` and install the Salt minion
+[etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
+[var/aliases/salt.sh][09]               | Shell functions for Salt
+
+
+## Bootstrap 
+
 This example uses a virtual machine setup with [vm-tools][00]:
 
 ```bash
@@ -13,7 +23,7 @@ vm ex $SALT_MASTER -r "
 
 [00]: https://github.com/vpenso/vm-tools
 
-### Bootstrap Salt Minion
+### Salt Deployment
 
 Start from a basic CentOS 7 installation:
 
@@ -55,4 +65,5 @@ vm ex $SALT_MASTER -r salt-local docker/docker-ce
 
 [01]: ../var/aliases/salt.sh
 [02]: ../bin/salt-master-vm-instance
-
+[08]: etc/yum.repos.d/salt.repo
+[09]: var/aliases/salt.sh
