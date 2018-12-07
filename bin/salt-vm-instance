@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# deploy the master instance by default
+instance=${1:-$SALT_MASTER}
+
+# start a CentOS 7 virtual machine instance to host the salt master
+virsh-instance shadow --memory 4 centos7 $instance
+sleep 15 # wait for the boot
+
+cd $(virsh-instance path $instance)
+
+echo Basic configuration of ${instance}...
+ssh-instance --root "
+        hostname $instance
+        echo $instance > /etc/hostname
+        systemctl disable --now firewalld |:
+        yum install -e 0 -qy git bash-completion
+"
+
+echo Install salt-minion...
+rsync-instance --root \
+        $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo \
+        :/etc/yum.repos.d/
+ssh-instance --root '
+        yum install --assumeyes epel-release
+        yum install --assumeyes salt-minion git bash-completion jq
+'
+
+if [ "$instance" = "$SALT_MASTER" ]
+then
+        echo Sync repository to $SALT_MASTER
+        rsync-instance --root $SALT_EXAMPLE_PATH :/opt
+        ssh-instance --root "echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc"
+fi
+
+cd - |:
+
+exit 0

@@ -1,7 +1,7 @@
 
 File                                    | Description
 ----------------------------------------|-----------------------------------------
-[bin/salt-master-vm-instance][02]       | Create VM `$SALT_MASTER` and install the Salt minion
+[bin/salt-vm-instance][02]              | Create a VM instance with the Salt minion installed
 [etc/yum.repos.d/salt.repo][08]         | SaltStack Yum repository configuration
 [var/aliases/salt.sh][09]               | Shell functions for Salt
 
@@ -44,7 +44,7 @@ vm ex $SALT_MASTER -r '
 
 [repo]: https://docs.saltstack.com/en/latest/topics/installation/rhel.html
 
-[bin/salt-master-vm-instance][02] automates the steps above.
+[bin/salt-vm-instance][02] automates the steps above.
 
 ### Salt Masterless Mode
 
@@ -64,6 +64,6 @@ vm ex $SALT_MASTER -r salt-local docker/docker-ce
 ```
 
 [01]: ../var/aliases/salt.sh
-[02]: ../bin/salt-master-vm-instance
+[02]: ../bin/salt-vm-instance
 [08]: etc/yum.repos.d/salt.repo
 [09]: var/aliases/salt.sh

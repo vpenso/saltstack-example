@@ -8,11 +8,13 @@ Docker     | Container Management          | <https://docker.com>
 
 # SaltStack
 
-Bootstrap a VM instance and deploy a **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
+Bootstrap a VM instance and deploy **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
 
 ```bash
 # create the Salt master VM instance
-salt-master-vm-instance
+salt-vm-instance
+# create a VM instance with salt-minion installed
+salt-vm-instance <name>
 # Login to the Salt master
 vm lo $SALT_MASTER -r
 # deploy Docker CE on the master
