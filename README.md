@@ -23,6 +23,7 @@ vm ex $SALT_MASTER -r salt-local docker/docker-ce
 
 Proceed by installing more services:
 
+* [docs/salt-master.md](docs/salt-master.md) - Install the salt-master 
 * [docs/docker.md](docs/docker.md) - Install the Docker runtime
 * [docs/docker_salt-master.md](docs/docker_salt-master.md) - Salt-master in a Docker container
 * [docs/docker_prometheus.md](docs/dicker_prometheus.md) - Prometheus server in a Docker container
