@@ -12,7 +12,7 @@ salt-vm-instance $SALT_MASTER
 # install the Salt master
 vm ex $SALT_MASTER -r "
         yum install -y salt-master
-        ln -s /opt/${SALT_REPO##*/}/srv/salt/ /srv/salt
+        cp $SALT_EXAMPLE_PATH/etc/salt/master /etc/salt
         systemctl enable --now salt-master
 "
 ```

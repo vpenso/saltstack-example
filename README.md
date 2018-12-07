@@ -35,8 +35,8 @@ File(s)                                   | Description
 [tf]: https://docs.saltstack.com/en/latest/ref/states/top.html
 
 ```bash
-# sync this repository with the salt-master VM instance
-vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH :/opt |:
+# sync the state tree with the salt-master VM instance
+vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH/srv/salt :/srv |:
 ```
 
 ### Service
