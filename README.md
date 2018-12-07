@@ -41,20 +41,22 @@ Salt configuration and state files:
 File(s)                                   | Description
 ------------------------------------------|------------------------------------------
 [srv/salt/](srv/salt/)                    | The **state tree** includes all SLS (SaLt State file) representing the state in which all nodes should be
-[etc/salt/master](etc/salt/master)        | Salt master configuration (`file_roots` >> `/srv/salt` defines to location of the state tree)
+[etc/salt/master](etc/salt/master)        | Salt master configuration (`file_roots` → `/srv/salt` defines to location of the state tree)
 [srv/salt/top.sls](srv/salt/top.sls)      | Maps nodes to SLS configuration files (cf. [top file][tf])
 
 [tf]: https://docs.saltstack.com/en/latest/ref/states/top.html
 
-**Sync the state tree** with the salt-master VM instance
+**Sync the state tree** with the salt-master VM instance (note
+that you need to re-sync after changes to the state tree):
 
 ```bash
-vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH/srv/salt :/srv |:
+vm sy $SALT_MASTER -r $SALT_STATE_TREE :/srv |:
 ```
 
 ### Minions
 
-Connect a `salt-minion` to the `$SALT_MASTER` VM instance:
+Create a VM instance, and configure its `salt-minion` to connect 
+with the `$SALT_MASTER` VM instance:
 
 ```bash
 instance=lxdev01 # i.e.
@@ -69,7 +71,7 @@ vm ex $instance -r "
 vm ex $SALT_MASTER -r -- salt-key -A -y
 ```
 
-Configure a node:
+Methods to **configure a node using Salt state files**:
 
 ```bash
 # check if the node responds to the salt-master

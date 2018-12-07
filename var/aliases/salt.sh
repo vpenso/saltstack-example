@@ -16,10 +16,3 @@ salt-local() {
                   |& tee -a $SALT_DOCKER_LOGS/salt.log
 
 }
-
-salt-call-local-state-docker() {
-
-        echo Exec masterless Salt to install Docker CE
-        salt-local docker/docker-ce
-
-}
