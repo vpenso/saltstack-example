@@ -11,25 +11,37 @@ Docker     | Container Management          | <https://docker.com>
 Bootstrap a VM instance and deploy **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
 
 ```bash
-# create the Salt master VM instance
-salt-vm-instance
 # create a VM instance with salt-minion installed
-salt-vm-instance <name>
+salt-vm-instance $instance
 # Login to the Salt master
-vm lo $SALT_MASTER -r
+vm lo $instance -r
 ```
 
-Install/configure the `salt-master`:
+Create/configure the salt-master VM instance
 
-* [docs/salt-master.md](docs/salt-master.md) - Install the salt-master 
-* [docs/docker_salt-master.md](docs/docker_salt-master.md) - Salt-master in a Docker container
+```bash
+# create the Salt master VM instance (salt-minion, and repository installed)
+salt-vm-instance $SALT_MASTER
+# install the Salt master
+vm ex $SALT_MASTER -r '
+        yum install -y salt-master
+        cp $SALT_EXAMPLE_PATH/etc/salt/master /etc/salt
+        systemctl enable --now salt-master
+'
+```
+
+Alternatively follow [docs/docker_salt-master.md][dsm]  to deploy the Salt master in a Docker container.
+
+[dsm]: docs/docker_salt-master.md
+
+### States
 
 Salt configuration and state files:
 
 File(s)                                   | Description
 ------------------------------------------|------------------------------------------
 [srv/salt/](srv/salt/)                    | The **state tree** includes all SLS (SaLt State file) representing the state in which all nodes should be
-[etc/salt/master](etc/salt/master)        | Salt master configuration (`file_roots` defines to location of the state tree)
+[etc/salt/master](etc/salt/master)        | Salt master configuration (`file_roots` >> `/srv/salt` defines to location of the state tree)
 [srv/salt/top.sls](srv/salt/top.sls)      | Maps nodes to SLS configuration files (cf. [top file][tf])
 
 [tf]: https://docs.saltstack.com/en/latest/ref/states/top.html
@@ -39,7 +51,23 @@ File(s)                                   | Description
 vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH/srv/salt :/srv |:
 ```
 
-### Service
+### Minions
+
+Connect a salt-minioni (i.e. lxdev01) to the `$SALT_MASTER` VM instance:
+
+```bash
+# create a VM instance (including an installed salt-minion)
+salt-vm-instance lxdev01
+# configure/start the salt-minion
+vm ex lxdev01 -r "
+        echo master: $(vm ip $SALT_MASTER) > /etc/salt/minion
+        systemctl enable --now salt-minion
+"
+# accespt the new salt-minion on the server
+vm ex $SALT_MASTER -r -- salt-key -A -y
+```
+
+## Services
 
 Proceed by installing more services:
 

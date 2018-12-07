@@ -1,4 +1,10 @@
 
+File                                                  | Description
+------------------------------------------------------|-----------------------------------------
+[var/aliases/docker.sh][11]                           | Shell functions for Docker
+[var/dockerfiles/salt-master/Dockerfile][10]          | Dockerfile for the Salt master
+[srv/salt/salt/salt-master-docker-container.sls][12]  | Salt state file to build & run salt-master container
+
 ## Salt-Master Container 
 
 Login to the VM, and build/run the salt-master container using the Docker CLI:
@@ -26,16 +32,12 @@ centos              latest              49f7960eb7e4        4 weeks ago         
 
 **Build and run the "salt-master"** docker container:
 
-File                                                  | Description
-------------------------------------------------------|-----------------------------------------
-[var/aliases/docker.sh][11]                           | Shell functions for Docker
-[var/dockerfiles/salt-master/Dockerfile][10]          | Dockerfile for the Salt master
-[srv/salt/salt/salt-master-docker-container.sls][12]  | Salt state file to build & run salt-master container
 
 
 Execute masterless Salt to build and start the salt-master container on localhost:
 
 ```bash
+vm ex $SALT_MASTER -r salt-local docker/docker-ce
 vm ex $SALT_MASTER -r salt-local salt/salt-master-docker-container
 ```
 
