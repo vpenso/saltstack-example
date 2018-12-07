@@ -74,6 +74,10 @@ Configure a node:
 ```bash
 # check if the node responds to the salt-master
 vm ex $SALT_MASTER -r -- salt -E $instance test.ping
+# ask the salt-master to configure a node
+vm ex $SALT_MASTER -r -- salt -E $instance state.apply $sls
+# ask a node to apply a configuration
+vm ex $instance -r -- salt-call state.apply $sls
 ```
 
 ## Services
