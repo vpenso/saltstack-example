@@ -5,9 +5,8 @@ Component  | Description                   | Cf.
 CentOS 7   | Operating system              | <https://centos.org>
 SaltStack  | Infrastructure orchestration  | <https://saltstack.com>
 Docker     | Container Management          | <https://docker.com>
-Prometheus | Time-series database          | <https://prometheus.io>
 
-# SaltStack with Docker
+# SaltStack
 
 Bootstrap a VM instance and deploy a **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
 
@@ -21,6 +20,7 @@ Login to the VM instance with `vm lo $SALT_MASTER -r`.
 
 Proceed by installing more services:
 
+* [docs/docker_salt-master.md](docker_salt-master.md) - Salt-master in a Docker container
 * [docs/prometheus.md](docs/prometheus.md)
 * [docs/docker_registry.md](docs/docker_registry.md)
 * [docs/docker_swarm.md](docs/docker_swarm.md)

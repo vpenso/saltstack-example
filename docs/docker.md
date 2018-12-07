@@ -2,7 +2,7 @@
 
 ### Docker Runtime
 
-Manuall installation of the Docker runtime:
+Manual installation of the Docker runtime:
 
 ```bash
 vm ex $SALT_MASTER -r '
@@ -15,10 +15,14 @@ vm ex $SALT_MASTER -r '
 '
 ```
 
+Use Salt to install the Docker runtime:
+
 File                                    | Description
 ----------------------------------------|-----------------------------------------
 [srv/salt/docker/docker-ce.repo][07]    | Docker CE Yum repository configuration
 [srv/salt/docker/docker-ce.sls][06]     | Salt state file to install Docker CE
+
+Login to the VM and use Salt masterless mode:
 
 ```bash
 # run salt masterless to install Docker
@@ -30,10 +34,7 @@ docker info
 Alternatively use the shell function from [var/aliases/salt.sh](../var/aliases/salt.sh)
 
 ```bash
-vm ex $SALT_MASTER -r '
-        salt-local docker/docker-ce
-        docker info
-'
+vm ex $SALT_MASTER -r  salt-local docker/docker-ce
 ```
 
 [06]: srv/salt/docker/docker-ce.sls

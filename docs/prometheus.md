@@ -1,3 +1,6 @@
+Component  | Description                   | Cf.
+-----------|-------------------------------|-----------------------
+Prometheus | Time-series database          | <https://prometheus.io>
 
 # Prometheus
 
