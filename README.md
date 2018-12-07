@@ -17,7 +17,7 @@ salt-vm-instance $instance
 vm lo $instance -r
 ```
 
-Create/configure the salt-master VM instance
+Create/configure the **`salt-master` VM instance**
 
 ```bash
 # create the Salt master VM instance (salt-minion, and repository installed)
@@ -46,25 +46,34 @@ File(s)                                   | Description
 
 [tf]: https://docs.saltstack.com/en/latest/ref/states/top.html
 
+**Sync the state tree** with the salt-master VM instance
+
 ```bash
-# sync the state tree with the salt-master VM instance
 vm sy $SALT_MASTER -r $SALT_EXAMPLE_PATH/srv/salt :/srv |:
 ```
 
 ### Minions
 
-Connect a salt-minioni (i.e. lxdev01) to the `$SALT_MASTER` VM instance:
+Connect a `salt-minion` to the `$SALT_MASTER` VM instance:
 
 ```bash
+instance=lxdev01 # i.e.
 # create a VM instance (including an installed salt-minion)
-salt-vm-instance lxdev01
+salt-vm-instance $instance
 # configure/start the salt-minion
-vm ex lxdev01 -r "
+vm ex $instance -r "
         echo master: $(vm ip $SALT_MASTER) > /etc/salt/minion
         systemctl enable --now salt-minion
 "
-# accespt the new salt-minion on the server
+# accept the new salt-minion on the server
 vm ex $SALT_MASTER -r -- salt-key -A -y
+```
+
+Configure a node:
+
+```bash
+# check if the node responds to the salt-master
+vm ex $SALT_MASTER -r -- salt -E $instance test.ping
 ```
 
 ## Services
