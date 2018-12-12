@@ -34,7 +34,7 @@ docker info
 Alternatively use the shell function from [var/aliases/salt.sh](../var/aliases/salt.sh)
 
 ```bash
-vm ex $SALT_MASTER -r  salt-local docker/docker-ce
+vm ex $SALT_MASTER -r salt-local docker/docker-ce
 ```
 
 [06]: srv/salt/docker/docker-ce.sls

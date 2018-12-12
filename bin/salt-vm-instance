@@ -1,7 +1,75 @@
 #!/usr/bin/env bash
+#
+# Copyright 2018 Victor Penso
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
+VERSION=0.1
+
+# Filename of this script
+SCRIPT=${0##*/}
+
+# Help text for this script
+HELP=\
+"usage: $SCRIPT [-hd] [<instance>]
+
+Create a VM instance with salt-minion installed
+
+positional arguments:
+
+  instance                name of the VM instance to create
+
+optional arguments:
+  -h, --help              show this help message
+  -m, --master <master>   connect minoon to Salt master
+  --version               program version number"
+
+master=
+# Parse the command line options
+ARGS=$(getopt -o hm: -l "help,master,version" -- "$@")
+eval set -- "$ARGS"
+while true; do
+        case "$1" in
+        -h|--help)
+                echo "$HELP"
+                exit 0
+                ;;
+        -m|--master)
+                shift
+                master=$1
+                shift
+                ;;
+        --version)
+                echo $VERSION
+                exit 0
+                ;;
+        --)
+                shift
+                break
+                ;;
+        *)
+                break
+                ;;
+        esac
+done
+
+logs=/tmp/salt-vm-instance.log
 # deploy the master instance by default
 instance=${1:-$SALT_MASTER}
+
+echo Write log to $logs
 
 # start a CentOS 7 virtual machine instance to host the salt master
 virsh-instance shadow --memory 4 centos7 $instance
@@ -9,28 +77,42 @@ sleep 15 # wait for the boot
 
 cd $(virsh-instance path $instance)
 
-echo Basic configuration of ${instance}...
+echo $instance basic configuration...
 ssh-instance --root "
         hostname $instance
         echo $instance > /etc/hostname
         systemctl disable --now firewalld |:
         yum install -e 0 -qy git bash-completion
-"
+" > $logs
 
-echo Install salt-minion...
+echo $instance install salt-minion...
 rsync-instance --root \
         $SALT_EXAMPLE_PATH/etc/yum.repos.d/salt.repo \
-        :/etc/yum.repos.d/
+        :/etc/yum.repos.d/ \
+        >> $logs
 ssh-instance --root '
         yum install --assumeyes epel-release
         yum install --assumeyes salt-minion git bash-completion jq
-'
+' >> $logs
 
-if [ "$instance" = "$SALT_MASTER" ]
-then
-        echo Sync repository to $SALT_MASTER
-        rsync-instance --root $SALT_EXAMPLE_PATH :/opt
+if [ "$instance" = "$SALT_MASTER" ] ; then
+
+        echo $instance sync Git repository to /opt
+        rsync-instance --root $SALT_EXAMPLE_PATH :/opt >> $logs
         ssh-instance --root "echo 'source /opt/${SALT_REPO##*/}/source_me.sh' >> ~/.bashrc"
+
+fi
+
+# connect the minion to the Salt master if --master option is set by the user
+if [ -n "$master" ] ; then
+
+        echo $instance connect salt-minion to master on $master
+        master_ip=$(virsh-nat-bridge lookup $master | cut -d' ' -f2)
+        ssh-instance --root "
+                echo master: $master_ip > /etc/salt/minion
+                systemctl enable --now salt-minion
+        " >> $logs
+
 fi
 
 cd - |:

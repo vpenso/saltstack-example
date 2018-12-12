@@ -93,6 +93,6 @@ vm ex $instance -r -- salt-call state.apply $sls
 Proceed by installing more services:
 
 * [docs/docker.md](docs/docker.md) - Install the Docker runtime
-* [docs/docker_prometheus.md](docs/dicker_prometheus.md) - Prometheus server in a Docker container
+* [docs/docker_prometheus.md](docs/docker_prometheus.md) - Prometheus server in a Docker container
 * [docs/docker_registry.md](docs/docker_registry.md) - Docker Registry in a Docker container
 * [docs/docker_swarm.md](docs/docker_swarm.md) - Docker Swarm cluster
