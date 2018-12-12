@@ -40,6 +40,34 @@ Alternatively follow [docs/docker_salt-master.md][dsm]  to deploy the Salt maste
 
 [dsm]: docs/docker_salt-master.md
 
+### Minions
+
+Create a VM instance ↴ [salt-vm-instance][01], and **configure `salt-minion`** to connect with the `$SALT_MASTER`:
+
+```bash
+instance=lxdev01 # i.e.
+# create a VM instance (including an installed salt-minion)
+salt-vm-instance $instance
+# configure/start the salt-minion
+vm ex $instance -r "
+        echo master: $(vm ip $SALT_MASTER) > /etc/salt/minion
+        systemctl enable --now salt-minion
+"
+```
+
+Alternatively use ↴ [salt-vm-instance][01] option `--master`:
+
+```bash
+salt-vm-instance -m $SALT_MASTER $instance
+```
+
+**Accept the minion key(s)** on the Salt master:
+
+```
+# accept the new salt-minion on the server
+vm ex $SALT_MASTER -r -- salt-key -A -y
+```
+
 ### States
 
 Salt configuration and state files:
@@ -59,25 +87,7 @@ that you need to re-sync after changes to the state tree):
 vm sy $SALT_MASTER -r $SALT_STATE_TREE :/srv |:
 ```
 
-### Minions
-
-Create a VM instance, and configure its `salt-minion` to connect 
-with the `$SALT_MASTER` VM instance:
-
-```bash
-instance=lxdev01 # i.e.
-# create a VM instance (including an installed salt-minion)
-salt-vm-instance $instance
-# configure/start the salt-minion
-vm ex $instance -r "
-        echo master: $(vm ip $SALT_MASTER) > /etc/salt/minion
-        systemctl enable --now salt-minion
-"
-# accept the new salt-minion on the server
-vm ex $SALT_MASTER -r -- salt-key -A -y
-```
-
-Methods to **configure a node using Salt state files**:
+Methods to **configure a node** using Salt state files:
 
 ```bash
 # check if the node responds to the salt-master
@@ -96,3 +106,6 @@ Proceed by installing more services:
 * [docs/docker_prometheus.md](docs/docker_prometheus.md) - Prometheus server in a Docker container
 * [docs/docker_registry.md](docs/docker_registry.md) - Docker Registry in a Docker container
 * [docs/docker_swarm.md](docs/docker_swarm.md) - Docker Swarm cluster
+
+
+[01]: bin/salt-vm-instance
