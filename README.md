@@ -14,7 +14,7 @@ source source_me.sh
 
 # SaltStack
 
-Bootstrap a VM instance and deploy **Salt** (cf. [docs/bootstrap.md](docs/bootstrap.md)):
+↴ [salt-vm-instance][01] bootstraps VM instance including `salt-minion`, cf. [docs/bootstrap.md](docs/bootstrap.md):
 
 ```bash
 # create a VM instance with salt-minion installed
@@ -22,6 +22,8 @@ salt-vm-instance $instance
 # Login to the VM instance and check the version
 vm ex $instance -r -- salt-minion --version
 ```
+
+### Master
 
 Create/configure the **`salt-master` VM instance**
 
