@@ -23,7 +23,7 @@ salt-vm-instance $instance
 vm ex $instance -r -- salt-minion --version
 ```
 
-### Master
+## Salt Master
 
 Create/configure the **`salt-master` VM instance**
 
@@ -42,7 +42,27 @@ Alternatively follow [docs/docker_salt-master.md][dsm]  to deploy the Salt maste
 
 [dsm]: docs/docker_salt-master.md
 
-### Minions
+### Minion Keys
+
+Accept all minion keys on the Salt master:
+
+```
+# accept the new salt-minion on the server
+vm ex $SALT_MASTER -r -- salt-key -A -y
+```
+
+Common [salt-key][salt-key] commands:
+
+```bash
+salt-key -A -y                          # accept all (unaccpeted) Salt minions
+salt-key -L                             # list all keys
+salt-key -d <minion>                    # remove a minion key
+salt-key -a <minion>                    # add a single minion key
+```
+
+[saltkey]: https://docs.saltstack.com/en/latest/ref/cli/salt-key.html
+
+## Salt Minions
 
 Create a VM instance ↴ [salt-vm-instance][01], and **configure `salt-minion`** to connect with the `$SALT_MASTER`:
 
@@ -63,12 +83,17 @@ Alternatively use ↴ [salt-vm-instance][01] option `--master`:
 salt-vm-instance -m $SALT_MASTER $instance
 ```
 
-**Accept the minion key(s)** on the Salt master:
+Minion configuration and operations artefacts, [Salt Minion configuration][minconf]:
 
+```bash
+/etc/salt/minion                   # Configuration file
+/etc/salt/minion_id                # Minion unique identifier
+/etc/salt/pki/minion/minion.*      # Minion key
+salt-minion -l debug               # Start minion in foreground for debugging
+/var/log/salt/minion               # log files
 ```
-# accept the new salt-minion on the server
-vm ex $SALT_MASTER -r -- salt-key -A -y
-```
+
+[minconf]: https://docs.saltstack.com/en/latest/ref/configuration/minion.html
 
 ### States
 
@@ -104,7 +129,8 @@ vm ex $instance -r -- salt-call state.apply $sls
 
 Proceed by installing more services:
 
-* [docs/docker.md](docs/docker.md) - Install the Docker runtime
+* [docs/docker.md](docs/docker.md) - Install the Docker CE runtime
+* [docs/pxesrv.md](docs/pxesrv.md) - Install an PXESrv PXE boot server
 * [docs/docker_prometheus.md](docs/docker_prometheus.md) - Prometheus server in a Docker container
 * [docs/docker_registry.md](docs/docker_registry.md) - Docker Registry in a Docker container
 * [docs/docker_swarm.md](docs/docker_swarm.md) - Docker Swarm cluster
