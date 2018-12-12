@@ -5,7 +5,7 @@
 
 File                         | Description
 -----------------------------|-------------------------------------------
-[srv/salt/pxesrv.sls][02]    | Salt state file to install PXESrv as Dcoker container
+[srv/salt/pxesrv.sls][02]    | Salt state file to install PXESrv as Docker container
 
 ```bash
 instance=lxcm02 
@@ -15,9 +15,22 @@ salt-vm-instance -m $SALT_MASTER $instance
 vm ex $SALT_MASTER -r -- salt -E $instance state.apply pxesrv
 ```
 
-iPXE boot configuration is hosted in `/srv/pxesrv`.
+The SLS above will bind the host `/srv/pxesrv` directory into the pxesrv container.
 
-## PXE Boot
+## Configuration
+
+Publish an [iPXE configuration][ipxe] on the VM instance hosting PXESrv:
+
+```bash
+vm sy lxcm02 -r $PXESRV_ROOT/ :/srv/pxesrv
+```
+
+An [iPXE example configuration][ipxec] is available in the [PXESrv][01] repository.
+
+[ipxe]: http://ipxe.org/docs
+[ipxec]: https://github.com/vpenso/pxesrv/tree/master/public
+
+## Network Boot
 
 ```bash
 instance=lxdev01
