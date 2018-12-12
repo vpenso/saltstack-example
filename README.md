@@ -83,7 +83,7 @@ Alternatively use ↴ [salt-vm-instance][01] option `--master`:
 salt-vm-instance -m $SALT_MASTER $instance
 ```
 
-Minion configuration and operations artefacts, [Salt Minion configuration][minconf]:
+Minion configuration and operations artefacts, cf. [Salt Minion Configuration][minconf]:
 
 ```bash
 /etc/salt/minion                   # Configuration file
